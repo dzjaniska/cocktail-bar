@@ -11,10 +11,13 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Proxy;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Proxy(lazy = false)
+//@Proxy(lazy = false)
+@NoArgsConstructor
+@Getter @Setter 
 public class Label {
 	@Id
     @GeneratedValue(generator = "uuid")
@@ -28,12 +31,15 @@ public class Label {
             )
         }
     )
-    @Getter @Setter 
     private UUID id;
 	
-	@Getter @Setter 
 	private String labelEn;
-	
-	@Getter @Setter 
+	 
 	private String labelRu;
+	
+	public Label(LabelDTO labelDTO) {
+		id = labelDTO.getId();
+		labelEn = labelDTO.getLabelEn();
+		labelRu = labelDTO.getLabelRu();
+	}
 }

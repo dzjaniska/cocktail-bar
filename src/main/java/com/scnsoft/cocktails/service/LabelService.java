@@ -11,27 +11,23 @@ import com.scnsoft.cocktails.dao.LabelRepository;
 import com.scnsoft.cocktails.entity.Label;
 
 @Service
-public class LabelService {
+public class LabelService{
 	
 	@Autowired
 	private LabelRepository labelRepository;
 
-	@Transactional
 	public List<Label> findAll() {
 		return labelRepository.findAll();
 	}
 
-	@Transactional
 	public Label getById(UUID labelId) {
 		return labelRepository.getById(labelId);
 	}
 
-	@Transactional
 	public Label save(Label theLabel) {
 		return labelRepository.save(theLabel);
 	}
 
-	@Transactional
 	public void deleteById(UUID labelId) {
 		labelRepository.deleteById(labelId);
 	}

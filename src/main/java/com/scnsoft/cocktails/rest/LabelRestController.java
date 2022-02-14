@@ -13,41 +13,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.scnsoft.cocktails.entity.Label;
-import com.scnsoft.cocktails.service.LabelService;
+import com.scnsoft.cocktails.entity.LabelDTO;
+import com.scnsoft.cocktails.facade.LabelFacade;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/labels")
 public class LabelRestController {
 	
 	@Autowired
-	private LabelService labelService;
+	private LabelFacade labelFacade;
 	
-	@GetMapping("/labels")
-	public List<Label> getLabels() {
-		return labelService.findAll();
+	@GetMapping
+	public List<LabelDTO> getLabels() {
+		return labelFacade.findAll();
 	}
 	
-	@GetMapping("/labels/{labelId}")
-	public Label getLabel(@PathVariable UUID labelId) {
-		return labelService.getById(labelId);
+	@GetMapping("/{labelId}")
+	public LabelDTO getLabel(@PathVariable UUID labelId) {
+		return labelFacade.getById(labelId);
 	}
 	
-	@PostMapping("/labels")
-	public Label addLabel(@RequestBody Label theLabel) {
+	@PostMapping
+	public LabelDTO addLabel(@RequestBody LabelDTO theLabel) {
 		theLabel.setId(null);
 		
-		return labelService.save(theLabel);
+		return labelFacade.save(theLabel);
 	}
 	
-	@PutMapping("/labels")
-	public Label updateEmployee(@RequestBody Label theLabel) {
-		return labelService.save(theLabel);
+	@PutMapping
+	public LabelDTO updateLabel(@RequestBody LabelDTO theLabel) {
+		return labelFacade.save(theLabel);
 	}
 	
-	@DeleteMapping("/labels/{labelId}")
-	public String deleteEmployee(@PathVariable UUID labelId) {
-		labelService.deleteById(labelId);
+	@DeleteMapping("/{labelId}")
+	public String deleteLabel(@PathVariable UUID labelId) {
+		labelFacade.deleteById(labelId);
 		
 		return "Deleted label id - " + labelId;
 	}
