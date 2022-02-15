@@ -31,4 +31,8 @@ public class LabelService{
 	public void deleteById(UUID labelId) {
 		labelRepository.deleteById(labelId);
 	}
+
+	public void update(Label theLabel) {
+		labelRepository.update(theLabel.getId(), theLabel.getLabelEn(), theLabel.getLabelRu());		
+	}
 }

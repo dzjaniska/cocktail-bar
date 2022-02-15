@@ -49,11 +49,10 @@ public class LabelRestController {
 	
 	@PutMapping
 	public LabelDTO updateLabel(@RequestBody LabelDTO theLabel) {
-		LabelDTO theLabelDB = labelFacade.getById(theLabel.getId());
-		theLabelDB.setLabelEn(theLabel.getLabelEn());
-		theLabelDB.setLabelRu(theLabel.getLabelRu());
+		labelFacade.getById(theLabel.getId());
 		
-		return labelFacade.save(theLabelDB);
+		labelFacade.update(theLabel);
+		return theLabel;
 	}
 	
 	@DeleteMapping("/{labelId}")

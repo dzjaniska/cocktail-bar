@@ -40,4 +40,9 @@ public class LabelFacade {
 	public void deleteById(UUID labelId) {
 		labelService.deleteById(labelId);
 	}
+
+	@Transactional
+	public void update(LabelDTO theLabel) {
+		labelService.update(new Label(theLabel));
+	}
 }
