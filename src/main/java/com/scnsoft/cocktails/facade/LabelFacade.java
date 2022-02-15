@@ -45,4 +45,8 @@ public class LabelFacade {
 	public void update(LabelDTO theLabel) {
 		labelService.update(new Label(theLabel));
 	}
+
+	public boolean existsById(UUID id) {
+		return labelService.existsById(id);
+	}
 }

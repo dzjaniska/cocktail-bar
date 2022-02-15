@@ -35,4 +35,8 @@ public class LabelService{
 	public void update(Label theLabel) {
 		labelRepository.update(theLabel.getId(), theLabel.getLabelEn(), theLabel.getLabelRu());		
 	}
+
+	public boolean existsById(UUID id) {
+		return labelRepository.existsById(id);
+	}
 }
