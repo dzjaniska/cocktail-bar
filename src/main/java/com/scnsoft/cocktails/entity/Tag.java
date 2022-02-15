@@ -41,6 +41,7 @@ public class Tag {
 	
 	public Tag(TagDTO tagDTO) {
 		id = tagDTO.getId();
-		label = tagDTO.getLabel();
+		//load label from database if id present, use mapper instead of constructor
+		label = new Label(tagDTO.getLabel());
 	}
 }
