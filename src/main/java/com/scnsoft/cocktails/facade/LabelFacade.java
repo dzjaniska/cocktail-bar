@@ -42,8 +42,8 @@ public class LabelFacade {
 	}
 
 	@Transactional
-	public void update(LabelDTO theLabel) {
-		labelService.update(new Label(theLabel));
+	public LabelDTO update(LabelDTO theLabel) {
+		return new LabelDTO(labelService.update(new Label(theLabel)));
 	}
 
 	public boolean existsById(UUID id) {

@@ -35,12 +35,12 @@ public class Tag {
     )
     private UUID id;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "name_id")
 	private Label label;
 	
 	public Tag(TagDTO tagDTO) {
 		id = tagDTO.getId();
-		label = tagDTO.getLabel();
+		label = new Label(tagDTO.getLabelDTO());
 	}
 }

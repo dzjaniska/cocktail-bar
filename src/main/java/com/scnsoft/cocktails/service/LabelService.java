@@ -32,8 +32,9 @@ public class LabelService{
 		labelRepository.deleteById(labelId);
 	}
 
-	public void update(Label theLabel) {
-		labelRepository.update(theLabel.getId(), theLabel.getLabelEn(), theLabel.getLabelRu());		
+	public Label update(Label theLabel) {
+		labelRepository.update(theLabel.getId(), theLabel.getLabelEn(), theLabel.getLabelRu());
+		return labelRepository.getById(theLabel.getId());
 	}
 
 	public boolean existsById(UUID id) {

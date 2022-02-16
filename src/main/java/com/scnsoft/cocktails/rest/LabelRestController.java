@@ -51,8 +51,7 @@ public class LabelRestController {
 	public LabelDTO updateLabel(@RequestBody LabelDTO theLabel) {
 		labelFacade.getById(theLabel.getId());
 		
-		labelFacade.update(theLabel);
-		return theLabel;
+		return labelFacade.update(theLabel);
 	}
 	
 	@DeleteMapping("/{labelId}")

@@ -11,10 +11,10 @@ import lombok.Setter;
 public class TagDTO {
 	private UUID id;
 	
-	private Label label;
+	private LabelDTO labelDTO;
 	
 	public TagDTO(Tag tag) {
 		id = tag.getId();
-		label = tag.getLabel();
+		labelDTO = new LabelDTO(tag.getLabel());
 	}
 }

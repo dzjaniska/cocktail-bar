@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.scnsoft.cocktails.entity.TagDTO;
 import com.scnsoft.cocktails.facade.TagFacade;
-import com.scnsoft.cocktails.service.LabelService;
 
 @RestController
 @RequestMapping("/api/tags")
@@ -30,9 +28,6 @@ public class TagRestController {
 	
 	@Autowired
 	private TagFacade tagFacade;
-	
-	@Autowired
-	private LabelService labelService;
 	
 	@GetMapping
 	public List<TagDTO> getTags() {
@@ -44,29 +39,14 @@ public class TagRestController {
 		return tagFacade.getById(tagId);
 	}
 	
-	@Transactional
 	@PostMapping
 	public TagDTO addTag(@RequestBody TagDTO theTag) {
-		theTag.setId(null);
-		
-		UUID labelUuid = theTag.getLabel().getId();
-		if (labelService.existsById(labelUuid))
-		{
-			labelService.update(theTag.getLabel());
-			theTag.setLabel(labelService.getById(labelUuid));
-		}
-		else
-			theTag.getLabel().setId(null);
-		
 		return tagFacade.save(theTag);
 	}
 	
 	@PutMapping
 	public TagDTO updateTag(@RequestBody TagDTO theTag) {
-		tagFacade.getById(theTag.getId());
-		
-		tagFacade.update(theTag);
-		return theTag;
+		return tagFacade.update(theTag);
 	}
 	
 	@DeleteMapping("/{tagId}")

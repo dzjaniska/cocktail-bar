@@ -37,13 +37,14 @@ public class TagFacade {
 	}
 
 	@Transactional
+	public TagDTO update(TagDTO theTag) {
+		return new TagDTO(tagService.update(new Tag(theTag)));
+	}
+
+	@Transactional
 	public void deleteById(UUID tagId) {
 		tagService.deleteById(tagId);
 	}
 
-	@Transactional
-	public void update(TagDTO theTag) {
-		tagService.update(new Tag(theTag));
-	}
 
 }
