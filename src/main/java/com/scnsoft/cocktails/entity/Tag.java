@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ import lombok.Setter;
 @Getter @Setter 
 public class Tag {
 	@Id
+	@Type(type="uuid-char")
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(
         name = "uuid",
@@ -35,7 +37,7 @@ public class Tag {
     )
     private UUID id;
 	
-	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@OneToOne//(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "name_id")
 	private Label label;
 	

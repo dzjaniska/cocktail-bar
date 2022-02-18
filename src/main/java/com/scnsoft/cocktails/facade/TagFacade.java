@@ -12,12 +12,13 @@ import com.scnsoft.cocktails.entity.TagDTO;
 import com.scnsoft.cocktails.service.TagService;
 
 @Component
+@Transactional
 public class TagFacade {
 	
 	@Autowired
 	private TagService tagService;
 
-	@Transactional
+	
 	public List<TagDTO> findAll() {
 		return tagService
 				.findAll()
@@ -26,22 +27,22 @@ public class TagFacade {
 				.toList();
 	}
 
-	@Transactional
+	
 	public TagDTO getById(UUID tagId) {
 		return new TagDTO(tagService.getById(tagId));
 	}
 
-	@Transactional
+	
 	public TagDTO save(TagDTO theTag) {
 		return new TagDTO(tagService.save(new Tag(theTag)));
 	}
 
-	@Transactional
+	
 	public TagDTO update(TagDTO theTag) {
 		return new TagDTO(tagService.update(new Tag(theTag)));
 	}
 
-	@Transactional
+	
 	public void deleteById(UUID tagId) {
 		tagService.deleteById(tagId);
 	}

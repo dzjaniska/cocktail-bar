@@ -12,12 +12,13 @@ import com.scnsoft.cocktails.entity.LabelDTO;
 import com.scnsoft.cocktails.service.LabelService;
 
 @Component
+@Transactional
 public class LabelFacade {
 	
 	@Autowired
 	private LabelService labelService;
 
-	@Transactional
+	
 	public List<LabelDTO> findAll() {
 		return labelService
 				.findAll()
@@ -26,25 +27,26 @@ public class LabelFacade {
 				.toList();
 	}
 
-	@Transactional
+	
 	public LabelDTO getById(UUID labelId) {
 		return new LabelDTO(labelService.getById(labelId));
 	}
 
-	@Transactional
+	
 	public LabelDTO save(LabelDTO theLabel) {
 		return new LabelDTO(labelService.save(new Label(theLabel)));
 	}
 
-	@Transactional
+	
+	public LabelDTO update(LabelDTO theLabel) {
+		return new LabelDTO(labelService.update(new Label(theLabel)));
+	}
+	
+	
 	public void deleteById(UUID labelId) {
 		labelService.deleteById(labelId);
 	}
 
-	@Transactional
-	public LabelDTO update(LabelDTO theLabel) {
-		return new LabelDTO(labelService.update(new Label(theLabel)));
-	}
 
 	public boolean existsById(UUID id) {
 		return labelService.existsById(id);

@@ -42,15 +42,11 @@ public class LabelRestController {
 	
 	@PostMapping
 	public LabelDTO addLabel(@RequestBody LabelDTO theLabel) {
-		theLabel.setId(null);
-		
 		return labelFacade.save(theLabel);
 	}
 	
 	@PutMapping
 	public LabelDTO updateLabel(@RequestBody LabelDTO theLabel) {
-		labelFacade.getById(theLabel.getId());
-		
 		return labelFacade.update(theLabel);
 	}
 	

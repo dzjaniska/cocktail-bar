@@ -14,7 +14,7 @@ import com.scnsoft.cocktails.entity.Tag;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, UUID> {
 	
-	@Modifying
-	@Query("update Tag t set t.label = :label where t.id = :id")
-	public int update(@Param("id") UUID id, @Param("label") Label label);
+//	@Modifying
+//	@Query("update Tag t set t.label = :label where t.id = :id")
+//	public int update(@Param("id") UUID id, @Param("label") Label label);
 }

@@ -18,7 +18,7 @@ public class TagService {
 	private TagRepository tagRepository;
 	
 	@Autowired
-	private LabelRepository labelRepository;
+	private LabelService labelService;
 
 	public List<Tag> findAll() {
 		return tagRepository.findAll();
@@ -32,12 +32,14 @@ public class TagService {
 		theTag.setId(null);
 		
 		Label theLabel = theTag.getLabel();
-		if (!labelRepository.existsById(theLabel.getId()))
-			theLabel.setId(null);
-		else {
-			labelRepository.update(theLabel.getId(), theLabel.getLabelEn(), theLabel.getLabelRu());
-			theTag.setLabel(labelRepository.getById(theLabel.getId()));
-		}
+		theTag.setLabel(labelService.saveOrUpdate(theLabel));
+		
+//		if (!labelRepository.existsById(theLabel.getId()))
+//			theLabel.setId(null);
+//		else {
+//			labelRepository.update(theLabel.getId(), theLabel.getLabelEn(), theLabel.getLabelRu());
+//			theTag.setLabel(labelRepository.getById(theLabel.getId()));
+//		}
 		
 		return tagRepository.save(theTag);
 	}
@@ -46,16 +48,19 @@ public class TagService {
 		tagRepository.getById(theTag.getId());
 		
 		Label theLabel = theTag.getLabel();
-		if (!labelRepository.existsById(theLabel.getId()))
-		{
-			theLabel.setId(null);
-			theTag.setLabel(labelRepository.save(theLabel));
-		}
-		else
-			labelRepository.update(theLabel.getId(), theLabel.getLabelEn(), theLabel.getLabelRu());
-		tagRepository.update(theTag.getId(), theTag.getLabel());
+		theTag.setLabel(labelService.saveOrUpdate(theLabel));
 		
-		return tagRepository.getById(theTag.getId());
+//		Label theLabel = theTag.getLabel();
+//		if (!labelRepository.existsById(theLabel.getId()))
+//		{
+//			theLabel.setId(null);
+//			theTag.setLabel(labelRepository.save(theLabel));
+//		}
+//		else
+//			labelRepository.update(theLabel.getId(), theLabel.getLabelEn(), theLabel.getLabelRu());
+//		tagRepository.update(theTag.getId(), theTag.getLabel());
+		
+		return tagRepository.save(theTag);
 	}
 
 	public void deleteById(UUID tagId) {

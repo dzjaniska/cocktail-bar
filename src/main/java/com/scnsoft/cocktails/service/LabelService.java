@@ -25,16 +25,26 @@ public class LabelService{
 	}
 
 	public Label save(Label theLabel) {
+		theLabel.setId(null);
+		
 		return labelRepository.save(theLabel);
 	}
 
+	public Label update(Label theLabel) {
+		labelRepository.getById(theLabel.getId());
+		
+		return labelRepository.save(theLabel);
+	}
+	
+	public Label saveOrUpdate(Label theLabel) {
+		if (theLabel.getId() == null)
+			return save(theLabel);
+		else
+			return update(theLabel);
+	}
+	
 	public void deleteById(UUID labelId) {
 		labelRepository.deleteById(labelId);
-	}
-
-	public Label update(Label theLabel) {
-		labelRepository.update(theLabel.getId(), theLabel.getLabelEn(), theLabel.getLabelRu());
-		return labelRepository.getById(theLabel.getId());
 	}
 
 	public boolean existsById(UUID id) {
