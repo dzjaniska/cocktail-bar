@@ -1,11 +1,18 @@
 package com.scnsoft.cocktails.entity;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@Getter @Setter
 public class CocktailIngredientDTO {
 	private UUID id;
 	
