@@ -1,0 +1,44 @@
+[
+	{
+		"alc": 40,
+		"unit": "ml",
+		"name_id": "58e3b316-931b-11ec-96e5-fcaa14ac5ccc",
+		"description_id": "ba2083f5-931e-11ec-96e5-fcaa14ac5ccc"
+	},
+	{
+		"alc": 0,
+		"unit": "ml",
+		"name_id": "58e4eafb-931b-11ec-96e5-fcaa14ac5ccc",
+		"description_id": "ba2083f5-931e-11ec-96e5-fcaa14ac5ccc"
+	},
+	{
+		"alc": 0,
+		"unit": "pcs",
+		"name_id": "58e56ece-931b-11ec-96e5-fcaa14ac5ccc",
+		"description_id": "ba2083f5-931e-11ec-96e5-fcaa14ac5ccc"
+	},
+	{
+		"alc": 0,
+		"unit": "pcs",
+		"name_id": "58e62b0f-931b-11ec-96e5-fcaa14ac5ccc",
+		"description_id": "ba2083f5-931e-11ec-96e5-fcaa14ac5ccc"
+	},
+	{
+		"alc": 0,
+		"unit": "sp",
+		"name_id": "58e6abe3-931b-11ec-96e5-fcaa14ac5ccc",
+		"description_id": "ba2083f5-931e-11ec-96e5-fcaa14ac5ccc"
+	},
+	{
+		"alc": 0,
+		"unit": "pcs",
+		"name_id": "58e73d38-931b-11ec-96e5-fcaa14ac5ccc",
+		"description_id": "ba2083f5-931e-11ec-96e5-fcaa14ac5ccc"
+	},
+	{
+		"alc": 0,
+		"unit": "pcs",
+		"name_id": "58e7ac91-931b-11ec-96e5-fcaa14ac5ccc",
+		"description_id": "ba2083f5-931e-11ec-96e5-fcaa14ac5ccc"
+	}
+]
