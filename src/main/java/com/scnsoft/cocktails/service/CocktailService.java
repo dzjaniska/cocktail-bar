@@ -1,10 +1,10 @@
 package com.scnsoft.cocktails.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.scnsoft.cocktails.dao.CocktailRepository;
 import com.scnsoft.cocktails.entity.Cocktail;
@@ -22,6 +22,10 @@ public class CocktailService {
 
 	public List<Cocktail> findAll() {
 		return cocktailRepository.findAll();
+	}
+	
+	public Cocktail findById(UUID id) {
+		return cocktailRepository.getById(id);
 	}
 
 }

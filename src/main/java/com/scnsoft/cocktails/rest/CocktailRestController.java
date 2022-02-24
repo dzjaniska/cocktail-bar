@@ -2,18 +2,20 @@ package com.scnsoft.cocktails.rest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.scnsoft.cocktails.entity.CocktailDTO;
-import com.scnsoft.cocktails.service.CocktailFacade;
+import com.scnsoft.cocktails.facade.CocktailFacade;
 
 @RestController
 @RequestMapping("/api/cocktails")
@@ -38,8 +40,23 @@ public class CocktailRestController {
 		return cocktailFacade.findByNameAndDescriptionAndIngredientNameAndIngredientDescription(lang, name, description, ingredientName, ingredientDescription);
 	}
 	
+	@GetMapping("/all")
+	public List<CocktailDTO> getAllCocktails() {
+		return cocktailFacade.findAll();
+	}
+	
+	@GetMapping("/{cocktailId}")
+	public CocktailDTO getCocktail(@PathVariable UUID cocktailId) {
+		return cocktailFacade.findById(cocktailId);
+	}
+	
 	@ExceptionHandler
 	public ResponseEntity<String> handleException(InvalidLangException exc) {
 		return new ResponseEntity<>(exc.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<String> handleException(Exception exc) {
+		return new ResponseEntity<>(exc.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

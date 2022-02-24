@@ -1,11 +1,14 @@
 package com.scnsoft.cocktails.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import org.hibernate.Hibernate;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +32,9 @@ public class CocktailDTO {
 		image = cocktail.getImage();
 		labelDTOName = new LabelDTO(cocktail.getLabelName());
 		labelDTODescription = new LabelDTO(cocktail.getLabelDescription());
+//		List<CocktailIngredient> ingredients = cocktail.getCocktailIngredients();
+//		Hibernate.initialize(ingredients);
+//		System.out.println(Hibernate.isInitialized(ingredients));
 		cocktailIngredientsDTO = cocktail
 				.getCocktailIngredients()
 				.stream()

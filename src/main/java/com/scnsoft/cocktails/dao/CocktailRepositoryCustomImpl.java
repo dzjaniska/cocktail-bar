@@ -29,11 +29,11 @@ public class CocktailRepositoryCustomImpl implements CocktailRepositoryCustom {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Cocktail> query = builder.createQuery(Cocktail.class);
 		Root<Cocktail> cocktail = query.from(Cocktail.class);
-		Fetch<Cocktail, Ingredient> fetchCocktailIngredient = cocktail.fetch("cocktailIngredients").fetch("ingredient");
-		cocktail.fetch("labelName");
-		cocktail.fetch("labelDescription");
-		fetchCocktailIngredient.fetch("labelName");
-		fetchCocktailIngredient.fetch("labelDescription");
+//		Fetch<Cocktail, Ingredient> fetchCocktailIngredient = cocktail.fetch("cocktailIngredients").fetch("ingredient");
+//		cocktail.fetch("labelName");
+//		cocktail.fetch("labelDescription");
+//		fetchCocktailIngredient.fetch("labelName");
+//		fetchCocktailIngredient.fetch("labelDescription");
 		Join<Cocktail, CocktailIngredient> cocktailIngredient = cocktail.join("cocktailIngredients");
 		Join<CocktailIngredient, Ingredient> ingredient = cocktailIngredient.join("ingredient");
 		Join<Ingredient, Label> labelIngredientName = ingredient.join("labelName");

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,11 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,9 +23,11 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@Getter @Setter 
+@Getter 
+@Setter 
 public class Cocktail {
 	@Id
+	@Type(type="uuid-char")
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(
         name = "uuid",

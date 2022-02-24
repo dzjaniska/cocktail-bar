@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +20,11 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@Getter @Setter
+@Getter 
+@Setter
 public class CocktailIngredient {
 	@Id
+	@Type(type="uuid-char")
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(
         name = "uuid",
