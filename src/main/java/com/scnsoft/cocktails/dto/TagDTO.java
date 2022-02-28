@@ -1,6 +1,8 @@
-package com.scnsoft.cocktails.entity;
+package com.scnsoft.cocktails.dto;
 
 import java.util.UUID;
+
+import com.scnsoft.cocktails.entity.Tag;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

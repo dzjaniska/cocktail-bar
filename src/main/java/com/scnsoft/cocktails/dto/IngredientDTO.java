@@ -1,4 +1,4 @@
-package com.scnsoft.cocktails.entity;
+package com.scnsoft.cocktails.dto;
 
 import java.util.List;
 import java.util.UUID;
@@ -6,6 +6,9 @@ import java.util.UUID;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.scnsoft.cocktails.entity.CocktailIngredient;
+import com.scnsoft.cocktails.entity.Ingredient;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

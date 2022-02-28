@@ -1,17 +1,15 @@
 package com.scnsoft.cocktails.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Fetch;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.scnsoft.cocktails.dto.CocktailSearch;
 import com.scnsoft.cocktails.entity.Cocktail;
 import com.scnsoft.cocktails.entity.CocktailIngredient;
 import com.scnsoft.cocktails.entity.Ingredient;
@@ -23,8 +21,7 @@ public class CocktailRepositoryCustomImpl implements CocktailRepositoryCustom {
     private EntityManager entityManager;
 	
 	@Override
-	public List<Cocktail> findByNameAndDescriptionAndIngredientNameAndIngredientDescription(String lang, String name,
-			String description, String ingredientName, String ingredientDescription) {
+	public List<Cocktail> findByNameAndDescriptionAndIngredientNameAndIngredientDescription(CocktailSearch search) {
 		
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Cocktail> query = builder.createQuery(Cocktail.class);
@@ -39,16 +36,16 @@ public class CocktailRepositoryCustomImpl implements CocktailRepositoryCustom {
 		Join<Ingredient, Label> labelIngredientName = ingredient.join("labelName");
 		Join<Ingredient, Label> labelIngredientDescription = ingredient.join("labelDescription");
 		
-		List<Predicate> predicates = new ArrayList<>();
-		if (name != null)
-			predicates.add(builder.like(cocktail.get("labelName").get("label" + lang), name + "%"));
-		if (description != null)
-			predicates.add(builder.like(cocktail.get("labelDescription").get("label" + lang), "%" + description + "%"));
-		if (ingredientName != null)
-			predicates.add(builder.like(labelIngredientName.get("label" + lang), ingredientName + "%"));
-		if (ingredientDescription != null)
-			predicates.add(builder.like(labelIngredientDescription.get("label" + lang), "%" + ingredientDescription + "%"));
-		query = query.where(predicates.toArray(new Predicate[0])).distinct(true);
+//		List<Predicate> predicates = new ArrayList<>();
+//		if (name != null)
+//			predicates.add(builder.like(cocktail.get(Cocktail.Fields.labelName).get("label" + lang), name + "%"));
+//		if (description != null)
+//			predicates.add(builder.like(cocktail.get("labelDescription").get("label" + lang), "%" + description + "%"));
+//		if (ingredientName != null)
+//			predicates.add(builder.like(labelIngredientName.get("label" + lang), ingredientName + "%"));
+//		if (ingredientDescription != null)
+//			predicates.add(builder.like(labelIngredientDescription.get("label" + lang), "%" + ingredientDescription + "%"));
+//		query = query.where(predicates.toArray(new Predicate[0])).distinct(true);
 		
 		return entityManager.createQuery(query).getResultList();
 	}

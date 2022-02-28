@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.scnsoft.cocktails.entity.TagDTO;
+import com.scnsoft.cocktails.dto.TagDTO;
 import com.scnsoft.cocktails.facade.TagFacade;
 
 @RestController

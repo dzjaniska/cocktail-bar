@@ -14,29 +14,19 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
+import com.scnsoft.cocktails.dto.CocktailIngredientDTO;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @Entity
 @NoArgsConstructor
 @Getter 
 @Setter
-public class CocktailIngredient {
-	@Id
-	@Type(type="uuid-char")
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(
-        name = "uuid",
-        strategy = "uuid2",
-        parameters = {
-            @Parameter(
-                name = "uuid_gen_strategy_class",
-                value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-            )
-        }
-    )
-	private UUID id;
+@FieldNameConstants
+public class CocktailIngredient extends AbstractEntity {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cocktail_id")
@@ -47,4 +37,11 @@ public class CocktailIngredient {
 	private Ingredient ingredient;
 	
 	private BigDecimal quantity;
+
+	public CocktailIngredient(CocktailIngredientDTO ci) {
+		id = ci.getId();
+		cocktail = null;
+		ingredient = new Ingredient(ci.getIngredientDTO());
+		quantity = ci.getQuantity();
+	}
 }

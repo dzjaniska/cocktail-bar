@@ -1,4 +1,4 @@
-package com.scnsoft.cocktails.entity;
+package com.scnsoft.cocktails.dto;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.scnsoft.cocktails.entity.CocktailIngredient;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.scnsoft.cocktails.entity;
+package com.scnsoft.cocktails.dto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.Hibernate;
+
+import com.scnsoft.cocktails.entity.Cocktail;
+import com.scnsoft.cocktails.entity.CocktailIngredient;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

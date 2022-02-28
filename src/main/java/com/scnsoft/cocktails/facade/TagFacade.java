@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.scnsoft.cocktails.dto.TagDTO;
 import com.scnsoft.cocktails.entity.Tag;
-import com.scnsoft.cocktails.entity.TagDTO;
 import com.scnsoft.cocktails.service.TagService;
 
 @Component

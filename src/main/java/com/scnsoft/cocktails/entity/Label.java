@@ -10,6 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
+import com.scnsoft.cocktails.dto.LabelDTO;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,21 +20,7 @@ import lombok.Setter;
 //@Proxy(lazy = false)
 @NoArgsConstructor
 @Getter @Setter 
-public class Label {
-	@Id
-	@Type(type="uuid-char")
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(
-        name = "uuid",
-        strategy = "uuid2",
-        parameters = {
-            @Parameter(
-                name = "uuid_gen_strategy_class",
-                value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-            )
-        }
-    )
-    private UUID id;
+public class Label extends AbstractEntity {
 	
 	private String labelEn;
 	 

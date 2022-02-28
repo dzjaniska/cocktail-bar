@@ -17,29 +17,19 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
+import com.scnsoft.cocktails.dto.CocktailDTO;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @Entity
 @NoArgsConstructor
 @Getter 
-@Setter 
-public class Cocktail {
-	@Id
-	@Type(type="uuid-char")
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(
-        name = "uuid",
-        strategy = "uuid2",
-        parameters = {
-            @Parameter(
-                name = "uuid_gen_strategy_class",
-                value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-            )
-        }
-    )
-	private UUID id;
+@Setter
+@FieldNameConstants
+public class Cocktail extends AbstractEntity {
 	
 	private String image;
 	
@@ -53,4 +43,16 @@ public class Cocktail {
 	
 	@OneToMany(mappedBy = "cocktail", fetch = FetchType.LAZY)
 	private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
+	
+	public Cocktail(CocktailDTO cocktailDTO) {
+		id = cocktailDTO.getId();
+		image = cocktailDTO.getImage();
+		labelName = new Label(cocktailDTO.getLabelDTOName());
+		labelDescription = new Label(cocktailDTO.getLabelDTODescription());
+		cocktailIngredients = cocktailDTO
+				.getCocktailIngredientsDTO()
+				.stream()
+				.map(ci -> new CocktailIngredient(ci))
+				.toList();
+	}
 }
