@@ -26,20 +26,20 @@ public class CocktailFacade {
 		return new PageImpl<>(cocktailService
 				.findAll(search, pageable)
 				.stream()
-				.map(c -> new CocktailDTO(c))
+				.map(c -> new CocktailDTO(c, false))
 				.toList());
 	}
 	
 	public CocktailDTO findById(UUID id) {
-		return new CocktailDTO(cocktailService.findById(id));
+		return new CocktailDTO(cocktailService.findById(id), false);
 	}
 
 	public CocktailDTO save(CocktailDTO theCocktail) {
-		return new CocktailDTO(cocktailService.save(new Cocktail(theCocktail)));
+		return new CocktailDTO(cocktailService.save(new Cocktail(theCocktail)), false);
 	}
 	
 	public CocktailDTO update(CocktailDTO theCocktail) {
-		return new CocktailDTO(cocktailService.update(new Cocktail(theCocktail)));
+		return new CocktailDTO(cocktailService.update(new Cocktail(theCocktail)), false);
 	}
 	
 	public void deleteById(UUID id) {

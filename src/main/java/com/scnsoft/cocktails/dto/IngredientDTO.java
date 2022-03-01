@@ -27,14 +27,18 @@ public class IngredientDTO {
 	
 	private LabelDTO labelDTODescription;
 	
-	private List<CocktailIngredient> ingredientCocktailsDTO;
+	private List<CocktailIngredientDTO> ingredientCocktailsDTO;
 	
-	public IngredientDTO(Ingredient ingredient) {
+	public IngredientDTO(Ingredient ingredient, boolean nullCollection) {
 		id = ingredient.getId();
 		alc = ingredient.getAlc();
 		unit = ingredient.getUnit();
 		labelDTOName = new LabelDTO(ingredient.getLabelName());
 		labelDTODescription = new LabelDTO(ingredient.getLabelDescription());
-		ingredientCocktailsDTO = null;
+		ingredientCocktailsDTO = nullCollection ? null : ingredient
+														.getIngredientCocktails()
+														.stream()
+														.map(ic -> new CocktailIngredientDTO(ic, false))
+														.toList();
 	}
 }

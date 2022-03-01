@@ -1,7 +1,7 @@
 package com.scnsoft.cocktails.rest;
 
-import java.util.Arrays;
-import java.util.List;
+import static com.scnsoft.cocktails.rest.RestControllerUtil.processLang;
+
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
@@ -12,59 +12,37 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.scnsoft.cocktails.dto.CocktailDTO;
-import com.scnsoft.cocktails.dto.CocktailSearch;
-import com.scnsoft.cocktails.facade.CocktailFacade;
-
-import static com.scnsoft.cocktails.rest.RestControllerUtil.*;
+import com.scnsoft.cocktails.dto.IngredientDTO;
+import com.scnsoft.cocktails.dto.IngredientSearch;
+import com.scnsoft.cocktails.facade.IngredientFacade;
 
 @RestController
-@RequestMapping("/api/cocktails")
-public class CocktailRestController {
+@RequestMapping("/api/ingredients")
+public class IngredientRestController {
 	
 	@Autowired
-	private CocktailFacade cocktailFacade;
+	private IngredientFacade ingredientFacade;
 	
 	@GetMapping
-	public Page<CocktailDTO> getCocktails(CocktailSearch search, Pageable pageable) {
+	public Page<IngredientDTO> getIngredient(IngredientSearch search, Pageable pageable) {
 		
 		String lang = search.getLang();
 		lang = processLang(lang);
 		search.setLang(lang);
 		
-		return cocktailFacade.findAll(search, pageable);
+		return ingredientFacade.findAll(search, pageable);
 	}
 	
-	@GetMapping("/{cocktailId}")
-	public CocktailDTO getCocktail(@PathVariable UUID cocktailId) {
-		return cocktailFacade.findById(cocktailId);
-	}
-	
-	@PostMapping
-	public CocktailDTO addCocktail(@RequestBody CocktailDTO theCocktail) {
-		return cocktailFacade.save(theCocktail);
-	}
-	
-	@PutMapping
-	public CocktailDTO updateCocktail(@RequestBody CocktailDTO theCocktail) {
-		return cocktailFacade.update(theCocktail);
-	}
-	
-	@DeleteMapping("/{cocktailId}")
-	public ResponseEntity<String> deleteCocktail(@PathVariable UUID cocktailId) {
-		cocktailFacade.deleteById(cocktailId);
-		
-		return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+	@GetMapping("/{ingredientId}")
+	public IngredientDTO getIngredient(@PathVariable UUID ingredientId) {
+		return ingredientFacade.findById(ingredientId);
 	}
 	
 	@ExceptionHandler

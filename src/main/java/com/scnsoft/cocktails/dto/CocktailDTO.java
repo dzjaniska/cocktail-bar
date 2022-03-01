@@ -30,7 +30,7 @@ public class CocktailDTO {
 
 	private List<CocktailIngredientDTO> cocktailIngredientsDTO;
 	
-	public CocktailDTO(Cocktail cocktail) {
+	public CocktailDTO(Cocktail cocktail, boolean nullCollection) {
 		id = cocktail.getId();
 		image = cocktail.getImage();
 		labelDTOName = new LabelDTO(cocktail.getLabelName());
@@ -38,10 +38,10 @@ public class CocktailDTO {
 //		List<CocktailIngredient> ingredients = cocktail.getCocktailIngredients();
 //		Hibernate.initialize(ingredients);
 //		System.out.println(Hibernate.isInitialized(ingredients));
-		cocktailIngredientsDTO = cocktail
+		cocktailIngredientsDTO = nullCollection ? null : cocktail
 				.getCocktailIngredients()
 				.stream()
-				.map(ci -> new CocktailIngredientDTO(ci))
+				.map(ci -> new CocktailIngredientDTO(ci, true))
 				.toList();
 	}
 }

@@ -24,10 +24,11 @@ public class CocktailIngredientDTO {
 	
 	private BigDecimal quantity;
 	
-	public CocktailIngredientDTO(CocktailIngredient cocktailIngredient) {
+	public CocktailIngredientDTO(CocktailIngredient cocktailIngredient, boolean nullCocktail) {
+		
 		id = cocktailIngredient.getId();
-		this.cocktailDTO = null;
-		ingredientDTO = new IngredientDTO(cocktailIngredient.getIngredient());
+		cocktailDTO = nullCocktail ? null : new CocktailDTO(cocktailIngredient.getCocktail(), true);
+		ingredientDTO = nullCocktail ? new IngredientDTO(cocktailIngredient.getIngredient(), true) : null;
 		quantity = cocktailIngredient.getQuantity();
 	}
 }
