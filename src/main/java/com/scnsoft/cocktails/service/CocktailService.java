@@ -64,10 +64,6 @@ public class CocktailService {
 	}
 	
 	public void deleteById(UUID id) {
-		Cocktail cocktail = cocktailRepository.getById(id);
-		
-		//cocktailIngredientRepository.deleteAll(cocktail.getCocktailIngredients());
-		
 		cocktailRepository.deleteById(id);
 	}
 }
