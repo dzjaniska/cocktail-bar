@@ -1,19 +1,12 @@
 package com.scnsoft.cocktails.entity;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 
 import com.scnsoft.cocktails.dto.IngredientDTO;
 
@@ -48,8 +41,8 @@ public class Ingredient extends AbstractEntity {
 		id = ingredientDTO.getId();
 		alc = ingredientDTO.getAlc();
 		unit = ingredientDTO.getUnit();
-		labelName = new Label(ingredientDTO.getLabelDTOName());
-		labelDescription = new Label(ingredientDTO.getLabelDTODescription());
+		labelName = new Label(ingredientDTO.getName());
+		labelDescription = new Label(ingredientDTO.getDescription());
 		ingredientCocktails = null;
 	}
 }

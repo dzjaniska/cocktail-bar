@@ -1,18 +1,8 @@
 package com.scnsoft.cocktails.entity;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
+import javax.persistence.*;
 
 import com.scnsoft.cocktails.dto.CocktailIngredientDTO;
 
@@ -32,7 +22,7 @@ public class CocktailIngredient extends AbstractEntity {
 	@JoinColumn(name = "cocktail_id")
 	private Cocktail cocktail;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "ingredient_id")
 	private Ingredient ingredient;
 	
@@ -41,7 +31,7 @@ public class CocktailIngredient extends AbstractEntity {
 	public CocktailIngredient(CocktailIngredientDTO ci) {
 		id = ci.getId();
 		cocktail = null;
-		ingredient = new Ingredient(ci.getIngredientDTO());
+		ingredient = new Ingredient(ci.getIngredient());
 		quantity = ci.getQuantity();
 	}
 }

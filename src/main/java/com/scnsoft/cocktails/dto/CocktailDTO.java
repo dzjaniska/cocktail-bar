@@ -1,17 +1,9 @@
 package com.scnsoft.cocktails.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
-import org.hibernate.Hibernate;
-
 import com.scnsoft.cocktails.entity.Cocktail;
-import com.scnsoft.cocktails.entity.CocktailIngredient;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,21 +16,21 @@ public class CocktailDTO {
 	
 	private String image;
 	
-	private LabelDTO labelDTOName;
+	private LabelDTO name;
 
-	private LabelDTO labelDTODescription;
+	private LabelDTO description;
 
-	private List<CocktailIngredientDTO> cocktailIngredientsDTO;
+	private List<CocktailIngredientDTO> cocktailIngredients;
 	
 	public CocktailDTO(Cocktail cocktail, boolean nullCollection) {
 		id = cocktail.getId();
 		image = cocktail.getImage();
-		labelDTOName = new LabelDTO(cocktail.getLabelName());
-		labelDTODescription = new LabelDTO(cocktail.getLabelDescription());
+		name = new LabelDTO(cocktail.getLabelName());
+		description = new LabelDTO(cocktail.getLabelDescription());
 //		List<CocktailIngredient> ingredients = cocktail.getCocktailIngredients();
 //		Hibernate.initialize(ingredients);
 //		System.out.println(Hibernate.isInitialized(ingredients));
-		cocktailIngredientsDTO = nullCollection ? null : cocktail
+		cocktailIngredients = nullCollection ? null : cocktail
 				.getCocktailIngredients()
 				.stream()
 				.map(ci -> new CocktailIngredientDTO(ci, true))

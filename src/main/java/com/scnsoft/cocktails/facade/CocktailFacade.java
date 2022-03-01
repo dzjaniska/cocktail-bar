@@ -2,6 +2,8 @@ package com.scnsoft.cocktails.facade;
 
 import java.util.UUID;
 
+import com.scnsoft.cocktails.mapper.CocktailMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,10 +18,12 @@ import com.scnsoft.cocktails.service.CocktailService;
 
 @Transactional
 @Component
+@RequiredArgsConstructor
 public class CocktailFacade {
-	
-	@Autowired
-	CocktailService cocktailService;
+
+	private final CocktailService cocktailService;
+
+	private final CocktailMapper cocktailMapper;
 	
 	public Page<CocktailDTO> findAll(CocktailSearch search, Pageable pageable) {
 		
@@ -35,11 +39,11 @@ public class CocktailFacade {
 	}
 
 	public CocktailDTO save(CocktailDTO theCocktail) {
-		return new CocktailDTO(cocktailService.save(new Cocktail(theCocktail)), false);
+		return new CocktailDTO(cocktailService.save(cocktailMapper.toEntity(theCocktail)), false);
 	}
 	
 	public CocktailDTO update(CocktailDTO theCocktail) {
-		return new CocktailDTO(cocktailService.update(new Cocktail(theCocktail)), false);
+		return new CocktailDTO(cocktailService.update(cocktailMapper.toEntity(theCocktail)), false);
 	}
 	
 	public void deleteById(UUID id) {
