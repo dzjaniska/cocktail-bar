@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @NoArgsConstructor
@@ -22,15 +23,15 @@ public class Cocktail extends AbstractEntity {
 	private String image;
 
 	//rename into "label"
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "name_id")
 	private Label labelName;
 
 	//rename into "description"
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "description_id")
 	private Label labelDescription;
-	
+
 	@OneToMany(mappedBy = "cocktail", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
 	

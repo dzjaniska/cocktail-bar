@@ -38,7 +38,7 @@ public class CocktailSpecifications {
 	public static Specification<Cocktail> cocktailDescriptionContains(CocktailSearch search) {
 	    return new Specification<Cocktail>() {
 	      public Predicate toPredicate(Root<Cocktail> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-	        return cb.like(root.get(Cocktail.Fields.labelDescription).get("label" + search.getLang()), "%" + search.getDescription() + "%");
+	        return cb.like(root.get(Cocktail.Fields.labelName).get("label" + search.getLang()), "%" + search.getDescription() + "%");
 	      }
 	    };
 	  }

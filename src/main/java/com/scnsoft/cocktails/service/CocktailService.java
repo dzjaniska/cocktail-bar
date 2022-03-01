@@ -56,57 +56,17 @@ public class CocktailService {
 	}
 
 	public Cocktail save(Cocktail cocktail) {
-		cocktail.setId(null);
-		
-		Label name = cocktail.getLabelName();
-		cocktail.setLabelName(labelService.saveOrUpdate(name));
-		Label description = cocktail.getLabelDescription();
-		cocktail.setLabelDescription(labelService.saveOrUpdate(description));
-		
-		Cocktail sCocktail = cocktailRepository.save(cocktail);
-		
-		sCocktail.getCocktailIngredients().stream().forEach(ci -> { Ingredient i = ci.getIngredient();
-																	i.setLabelName(labelService.saveOrUpdate(i.getLabelName()));
-																	i.setLabelDescription(labelService.saveOrUpdate(i.getLabelDescription()));
-																	Ingredient iRet = ingredientService.saveOrUpdate(i);
-																	ci.setIngredient(iRet);});
-		List<CocktailIngredient> list = new ArrayList<>();
-		sCocktail.getCocktailIngredients().stream().forEach(ci -> { ci.setCocktail(sCocktail);
-																	CocktailIngredient ciRet = cocktailIngredientRepository.save(ci); 
-																	list.add(ciRet);});
-		sCocktail.setCocktailIngredients(list);
-		
-		return sCocktail;
+		return cocktailRepository.save(cocktail);
 	}
 	
 	public Cocktail update(Cocktail cocktail) {
-		cocktailRepository.getById(cocktail.getId());
-		
-		Label name = cocktail.getLabelName();
-		cocktail.setLabelName(labelService.saveOrUpdate(name));
-		Label description = cocktail.getLabelDescription();
-		cocktail.setLabelDescription(labelService.saveOrUpdate(description));
-		
-		Cocktail sCocktail = cocktailRepository.save(cocktail);
-		
-		cocktail.getCocktailIngredients().stream().forEach(ci -> { Ingredient i = ci.getIngredient();
-																	i.setLabelName(labelService.saveOrUpdate(i.getLabelName()));
-																	i.setLabelDescription(labelService.saveOrUpdate(i.getLabelDescription()));
-																	Ingredient iRet = ingredientService.saveOrUpdate(i);
-																	ci.setIngredient(iRet);});
-		List<CocktailIngredient> list = new ArrayList<>();
-		cocktail.getCocktailIngredients().stream().forEach(ci -> { ci.setCocktail(cocktail);
-																	CocktailIngredient ciRet = cocktailIngredientRepository.save(ci); 
-																	list.add(ciRet);});
-		sCocktail.setCocktailIngredients(list);
-		
-		return sCocktail;
+		return cocktailRepository.save(cocktail);
 	}
 	
 	public void deleteById(UUID id) {
 		Cocktail cocktail = cocktailRepository.getById(id);
 		
-		cocktailIngredientRepository.deleteAll(cocktail.getCocktailIngredients());
+		//cocktailIngredientRepository.deleteAll(cocktail.getCocktailIngredients());
 		
 		cocktailRepository.deleteById(id);
 	}
