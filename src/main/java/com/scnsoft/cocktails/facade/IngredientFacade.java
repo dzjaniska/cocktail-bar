@@ -9,8 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.scnsoft.cocktails.dto.CocktailDTO;
 import com.scnsoft.cocktails.dto.IngredientDTO;
 import com.scnsoft.cocktails.dto.IngredientSearch;
+import com.scnsoft.cocktails.entity.Cocktail;
 import com.scnsoft.cocktails.entity.Ingredient;
 import com.scnsoft.cocktails.service.IngredientService;
 
@@ -38,4 +40,15 @@ public class IngredientFacade {
 		return new IngredientDTO(ingredientService.findById(ingredientId), false);
 	}
 
+	public IngredientDTO save(IngredientDTO theIngredient) {
+		return new IngredientDTO(ingredientService.save(new Ingredient(theIngredient, false), false), false);
+	}
+
+	public IngredientDTO update(IngredientDTO theIngredient) {
+		return new IngredientDTO(ingredientService.update(new Ingredient(theIngredient, false), false), false);
+	}
+
+	public void deleteById(UUID ingredientId) {
+		ingredientService.deleteById(ingredientId);		
+	}
 }

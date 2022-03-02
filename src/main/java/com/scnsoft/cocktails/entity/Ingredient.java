@@ -44,12 +44,16 @@ public class Ingredient extends AbstractEntity {
 	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
 	private List<CocktailIngredient> ingredientCocktails;
 
-	public Ingredient(IngredientDTO ingredientDTO) {
+	public Ingredient(IngredientDTO ingredientDTO, boolean nullCollection) {
 		id = ingredientDTO.getId();
 		alc = ingredientDTO.getAlc();
 		unit = ingredientDTO.getUnit();
 		labelName = new Label(ingredientDTO.getLabelDTOName());
 		labelDescription = new Label(ingredientDTO.getLabelDTODescription());
-		ingredientCocktails = null;
+		ingredientCocktails = nullCollection ? null : ingredientDTO
+				.getIngredientCocktailsDTO()
+				.stream()
+				.map(ci -> new CocktailIngredient(ci, false))
+				.toList();
 	}
 }

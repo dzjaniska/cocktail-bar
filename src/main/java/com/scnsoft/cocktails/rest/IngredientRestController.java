@@ -12,13 +12,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.scnsoft.cocktails.dto.CocktailDTO;
 import com.scnsoft.cocktails.dto.IngredientDTO;
 import com.scnsoft.cocktails.dto.IngredientSearch;
 import com.scnsoft.cocktails.facade.IngredientFacade;
@@ -43,6 +46,23 @@ public class IngredientRestController {
 	@GetMapping("/{ingredientId}")
 	public IngredientDTO getIngredient(@PathVariable UUID ingredientId) {
 		return ingredientFacade.findById(ingredientId);
+	}
+	
+	@PostMapping
+	public IngredientDTO addIngredient(@RequestBody IngredientDTO theIngredient) {
+		return ingredientFacade.save(theIngredient);
+	}
+	
+	@PutMapping
+	public IngredientDTO updateIngredient(@RequestBody IngredientDTO theIngredient) {
+		return ingredientFacade.update(theIngredient);
+	}
+	
+	@DeleteMapping("/{ingredientId}")
+	public ResponseEntity<String> deleteIngredient(@PathVariable UUID ingredientId) {
+		ingredientFacade.deleteById(ingredientId);
+		
+		return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
 	}
 	
 	@ExceptionHandler

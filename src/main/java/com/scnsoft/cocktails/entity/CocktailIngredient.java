@@ -38,10 +38,10 @@ public class CocktailIngredient extends AbstractEntity {
 	
 	private BigDecimal quantity;
 
-	public CocktailIngredient(CocktailIngredientDTO ci) {
+	public CocktailIngredient(CocktailIngredientDTO ci, boolean nullCocktail) {
 		id = ci.getId();
-		cocktail = null;
-		ingredient = new Ingredient(ci.getIngredientDTO());
+		cocktail = nullCocktail ? null : new Cocktail(ci.getCocktailDTO(), true);
+		ingredient = nullCocktail ? new Ingredient(ci.getIngredientDTO(), true) : null;
 		quantity = ci.getQuantity();
 	}
 }
