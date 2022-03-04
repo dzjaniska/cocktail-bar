@@ -3,11 +3,6 @@ package com.scnsoft.cocktails.dto;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
-import com.scnsoft.cocktails.entity.CocktailIngredient;
 import com.scnsoft.cocktails.entity.Ingredient;
 
 import lombok.Getter;
@@ -23,19 +18,19 @@ public class IngredientDTO {
 	
 	private String unit;
 	
-	private LabelDTO labelDTOName;
+	private LabelDTO name;
 	
-	private LabelDTO labelDTODescription;
+	private LabelDTO description;
 	
-	private List<CocktailIngredientDTO> ingredientCocktailsDTO;
+	private List<CocktailIngredientDTO> cocktailIngredients;
 	
 	public IngredientDTO(Ingredient ingredient, boolean nullCollection) {
 		id = ingredient.getId();
 		alc = ingredient.getAlc();
 		unit = ingredient.getUnit();
-		labelDTOName = new LabelDTO(ingredient.getLabelName());
-		labelDTODescription = new LabelDTO(ingredient.getLabelDescription());
-		ingredientCocktailsDTO = nullCollection ? null : ingredient
+		name = new LabelDTO(ingredient.getLabelName());
+		description = new LabelDTO(ingredient.getLabelDescription());
+		cocktailIngredients = nullCollection ? null : ingredient
 														.getIngredientCocktails()
 														.stream()
 														.map(ic -> new CocktailIngredientDTO(ic, false))

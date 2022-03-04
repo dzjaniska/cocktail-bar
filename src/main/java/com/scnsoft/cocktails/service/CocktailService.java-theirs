@@ -55,25 +55,12 @@ public class CocktailService {
 		return cocktailRepository.getById(id);
 	}
 
-	public Cocktail save(Cocktail cocktail, boolean nullCollection) {
-		return cocktailRepository.save(cocktail);
-			sCocktail.getCocktailIngredients().stream().forEach(ci -> {
-				Ingredient i = ci.getIngredient();
-			});
-				ci.setCocktail(sCocktail);
-			});
-		}
-	}
-	
-	public Cocktail update(Cocktail cocktail, boolean nullCollection) {
+	public Cocktail save(Cocktail cocktail) {
 		return cocktailRepository.save(cocktail);
 	}
 	
-	public Cocktail saveOrUpdate(Cocktail cocktail, boolean nullCollection) {
-		if (cocktail.getId() == null)
-			return save(cocktail, nullCollection);
-		else
-			return update(cocktail, nullCollection);
+	public Cocktail update(Cocktail cocktail) {
+		return cocktailRepository.save(cocktail);
 	}
 	
 	public void deleteById(UUID id) {

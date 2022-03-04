@@ -39,11 +39,11 @@ public class CocktailFacade {
 	}
 
 	public CocktailDTO save(CocktailDTO theCocktail) {
-		return new CocktailDTO(cocktailService.save(new Cocktail(theCocktail, false), false), false);
+		return new CocktailDTO(cocktailService.save(cocktailMapper.toEntity(theCocktail)), false);
 	}
 	
 	public CocktailDTO update(CocktailDTO theCocktail) {
-		return new CocktailDTO(cocktailService.update(new Cocktail(theCocktail, false), false), false);
+		return new CocktailDTO(cocktailService.update(cocktailMapper.toEntity(theCocktail)), false);
 	}
 	
 	public void deleteById(UUID id) {
