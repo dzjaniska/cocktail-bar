@@ -23,23 +23,23 @@ public class Cocktail extends AbstractEntity {
 	private String image;
 
 	//rename into "label"
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "name_id")
-	private Label labelName;
+	private Label name;
 
 	//rename into "description"
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "description_id")
-	private Label labelDescription;
+	private Label description;
 
-	@OneToMany(mappedBy = "cocktail", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "cocktail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
 	
 	public Cocktail(CocktailDTO cocktailDTO, boolean nullCollection) {
 		id = cocktailDTO.getId();
 		image = cocktailDTO.getImage();
-		labelName = new Label(cocktailDTO.getName());
-		labelDescription = new Label(cocktailDTO.getDescription());
+		name = new Label(cocktailDTO.getName());
+		description = new Label(cocktailDTO.getDescription());
 		cocktailIngredients = nullCollection ? null : cocktailDTO
 				.getCocktailIngredients()
 				.stream()

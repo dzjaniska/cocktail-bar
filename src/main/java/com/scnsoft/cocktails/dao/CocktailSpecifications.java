@@ -30,7 +30,7 @@ public class CocktailSpecifications {
 	public static Specification<Cocktail> cocktailNameStartsWith(CocktailSearch search) {
 	    return new Specification<Cocktail>() {
 	      public Predicate toPredicate(Root<Cocktail> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-	        return cb.like(root.get(Cocktail.Fields.labelName).get("label" + search.getLang()), search.getName() + "%");
+	        return cb.like(root.get(Cocktail.Fields.name).get("label" + search.getLang()), search.getName() + "%");
 	      }
 	    };
 	  }
@@ -38,7 +38,7 @@ public class CocktailSpecifications {
 	public static Specification<Cocktail> cocktailDescriptionContains(CocktailSearch search) {
 	    return new Specification<Cocktail>() {
 	      public Predicate toPredicate(Root<Cocktail> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-	        return cb.like(root.get(Cocktail.Fields.labelDescription).get("label" + search.getLang()), "%" + search.getDescription() + "%");
+	        return cb.like(root.get(Cocktail.Fields.description).get("label" + search.getLang()), "%" + search.getDescription() + "%");
 	      }
 	    };
 	  }
@@ -47,7 +47,7 @@ public class CocktailSpecifications {
 	    return new Specification<Cocktail>() {
 	      public Predicate toPredicate(Root<Cocktail> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 	    	  Join<Cocktail, Ingredient> ingredient = root.join("cocktailIngredients").join("ingredient");
-	        return cb.like(ingredient.get(Ingredient.Fields.labelName).get("label" + search.getLang()), search.getIngredientName() + "%");
+	        return cb.like(ingredient.get(Ingredient.Fields.name).get("label" + search.getLang()), search.getIngredientName() + "%");
 	      }
 	    };
 	  }
@@ -56,7 +56,7 @@ public class CocktailSpecifications {
 	    return new Specification<Cocktail>() {
 	      public Predicate toPredicate(Root<Cocktail> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 	    	  Join<Cocktail, Ingredient> ingredient = root.join("cocktailIngredients").join("ingredient");
-	        return cb.like(ingredient.get(Ingredient.Fields.labelDescription).get("label" + search.getLang()), "%" + search.getIngredientDescription() + "%");
+	        return cb.like(ingredient.get(Ingredient.Fields.description).get("label" + search.getLang()), "%" + search.getIngredientDescription() + "%");
 	      }
 	    };
 	  }

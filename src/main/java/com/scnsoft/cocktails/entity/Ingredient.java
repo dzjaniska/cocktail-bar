@@ -22,25 +22,25 @@ public class Ingredient extends AbstractEntity {
 	
 	private String unit;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "name_id")
-	private Label labelName;
+	private Label name;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "description_id")
-	private Label labelDescription;
+	private Label description;
 	
-	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<CocktailIngredient> ingredientCocktails;
 
 	public Ingredient(IngredientDTO ingredientDTO, boolean nullCollection) {
 		id = ingredientDTO.getId();
 		alc = ingredientDTO.getAlc();
 		unit = ingredientDTO.getUnit();
-		labelName = new Label(ingredientDTO.getName());
-		labelDescription = new Label(ingredientDTO.getDescription());
+		name = new Label(ingredientDTO.getName());
+		description = new Label(ingredientDTO.getDescription());
 		ingredientCocktails = nullCollection ? null : ingredientDTO
-				.getIngredientCocktailsDTO()
+				.getIngredientCocktails()
 				.stream()
 				.map(ci -> new CocktailIngredient(ci, false))
 				.toList();

@@ -30,6 +30,6 @@ public class Tag extends AbstractEntity {
 	
 	public Tag(TagDTO tagDTO) {
 		id = tagDTO.getId();
-		label = new Label(tagDTO.getLabelDTO());
+		label = new Label(tagDTO.getLabel());
 	}
 }

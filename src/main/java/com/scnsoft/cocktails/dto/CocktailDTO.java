@@ -25,8 +25,8 @@ public class CocktailDTO {
 	public CocktailDTO(Cocktail cocktail, boolean nullCollection) {
 		id = cocktail.getId();
 		image = cocktail.getImage();
-		name = new LabelDTO(cocktail.getLabelName());
-		description = new LabelDTO(cocktail.getLabelDescription());
+		name = new LabelDTO(cocktail.getName());
+		description = new LabelDTO(cocktail.getDescription());
 //		List<CocktailIngredient> ingredients = cocktail.getCocktailIngredients();
 //		Hibernate.initialize(ingredients);
 //		System.out.println(Hibernate.isInitialized(ingredients));

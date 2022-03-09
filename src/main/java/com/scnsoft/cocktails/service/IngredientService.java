@@ -45,63 +45,11 @@ public class IngredientService {
 	}
 
 	public Ingredient save(Ingredient ingredient, boolean nullCollection) {
-		ingredient.setId(null);
-		
-		Label name = ingredient.getLabelName();
-		ingredient.setLabelName(labelService.saveOrUpdate(name));
-		Label description = ingredient.getLabelDescription();
-		ingredient.setLabelDescription(labelService.saveOrUpdate(description));
-		
-		Ingredient sIngredient = ingredientRepository.save(ingredient);
-		
-		if (!nullCollection) {
-			sIngredient.getIngredientCocktails().stream().forEach(ic -> {
-				Cocktail c = ic.getCocktail();
-				c.setLabelName(labelService.saveOrUpdate(c.getLabelName()));
-				c.setLabelDescription(labelService.saveOrUpdate(c.getLabelDescription()));
-				Cocktail cRet = cocktailService.saveOrUpdate(c, true);
-				ic.setCocktail(cRet);
-			});
-			List<CocktailIngredient> list = new ArrayList<>();
-			sIngredient.getIngredientCocktails().stream().forEach(ic -> {
-				ic.setIngredient(sIngredient);
-				CocktailIngredient icRet = cocktailIngredientRepository.save(ic);
-				list.add(icRet);
-			});
-			sIngredient.setIngredientCocktails(list);
-		}
-		
-		return sIngredient;
+		return ingredientRepository.save(ingredient);
 	}
 	
 	public Ingredient update(Ingredient ingredient, boolean nullCollection) {
-		ingredientRepository.getById(ingredient.getId());
-		
-		Label name = ingredient.getLabelName();
-		ingredient.setLabelName(labelService.saveOrUpdate(name));
-		Label description = ingredient.getLabelDescription();
-		ingredient.setLabelDescription(labelService.saveOrUpdate(description));
-		
-		Ingredient sIngredient = ingredientRepository.save(ingredient);
-		
-		if (!nullCollection) {
-			ingredient.getIngredientCocktails().stream().forEach(ic -> {
-				Cocktail c = ic.getCocktail();
-				c.setLabelName(labelService.saveOrUpdate(c.getLabelName()));
-				c.setLabelDescription(labelService.saveOrUpdate(c.getLabelDescription()));
-				Cocktail cRet = cocktailService.saveOrUpdate(c, true);
-				ic.setCocktail(cRet);
-			});
-			List<CocktailIngredient> list = new ArrayList<>();
-			ingredient.getIngredientCocktails().stream().forEach(ic -> {
-				ic.setIngredient(ingredient);
-				CocktailIngredient icRet = cocktailIngredientRepository.save(ic);
-				list.add(icRet);
-			});
-			sIngredient.setIngredientCocktails(list);
-		}
-		
-		return sIngredient;
+		return ingredientRepository.save(ingredient);
 	}
 
 	public Page<Ingredient> findAll(IngredientSearch search, Pageable pageable) {
@@ -123,8 +71,6 @@ public class IngredientService {
 
 	public void deleteById(UUID ingredientId) {
 		Ingredient ingredient = ingredientRepository.getById(ingredientId);
-		
-		cocktailIngredientRepository.deleteAll(ingredient.getIngredientCocktails());
 		
 		ingredientRepository.deleteById(ingredientId);
 	}

@@ -22,15 +22,15 @@ public class IngredientDTO {
 	
 	private LabelDTO description;
 	
-	private List<CocktailIngredientDTO> cocktailIngredients;
+	private List<CocktailIngredientDTO> ingredientCocktails;
 	
 	public IngredientDTO(Ingredient ingredient, boolean nullCollection) {
 		id = ingredient.getId();
 		alc = ingredient.getAlc();
 		unit = ingredient.getUnit();
-		name = new LabelDTO(ingredient.getLabelName());
-		description = new LabelDTO(ingredient.getLabelDescription());
-		cocktailIngredients = nullCollection ? null : ingredient
+		name = new LabelDTO(ingredient.getName());
+		description = new LabelDTO(ingredient.getDescription());
+		ingredientCocktails = nullCollection ? null : ingredient
 														.getIngredientCocktails()
 														.stream()
 														.map(ic -> new CocktailIngredientDTO(ic, false))

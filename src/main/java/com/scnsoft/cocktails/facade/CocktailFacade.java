@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.scnsoft.cocktails.dto.CocktailDTO;
 import com.scnsoft.cocktails.dto.CocktailSearch;
 import com.scnsoft.cocktails.entity.Cocktail;
+import com.scnsoft.cocktails.entity.Ingredient;
 import com.scnsoft.cocktails.service.CocktailService;
 
 @Transactional
@@ -27,11 +28,15 @@ public class CocktailFacade {
 	
 	public Page<CocktailDTO> findAll(CocktailSearch search, Pageable pageable) {
 		
-		return new PageImpl<>(cocktailService
-				.findAll(search, pageable)
+		Page<Cocktail> page = cocktailService
+				.findAll(search, pageable);
+		
+		return new PageImpl<>(page
 				.stream()
 				.map(c -> new CocktailDTO(c, false))
-				.toList());
+				.toList(),
+				pageable, 
+				page.getTotalElements());
 	}
 	
 	public CocktailDTO findById(UUID id) {
@@ -39,11 +44,13 @@ public class CocktailFacade {
 	}
 
 	public CocktailDTO save(CocktailDTO theCocktail) {
-		return new CocktailDTO(cocktailService.save(new Cocktail(theCocktail, false), false), false);
+		theCocktail.setId(null);
+		
+		return new CocktailDTO(cocktailService.save(cocktailMapper.toEntity(theCocktail, false), false), false);
 	}
 	
 	public CocktailDTO update(CocktailDTO theCocktail) {
-		return new CocktailDTO(cocktailService.update(new Cocktail(theCocktail, false), false), false);
+		return new CocktailDTO(cocktailService.update(cocktailMapper.toEntity(theCocktail, false), false), false);
 	}
 	
 	public void deleteById(UUID id) {
