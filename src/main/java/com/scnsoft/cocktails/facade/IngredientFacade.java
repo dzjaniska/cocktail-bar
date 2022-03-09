@@ -2,26 +2,28 @@ package com.scnsoft.cocktails.facade;
 
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.scnsoft.cocktails.dto.CocktailDTO;
 import com.scnsoft.cocktails.dto.IngredientDTO;
 import com.scnsoft.cocktails.dto.IngredientSearch;
-import com.scnsoft.cocktails.entity.Cocktail;
 import com.scnsoft.cocktails.entity.Ingredient;
+import com.scnsoft.cocktails.mapper.IngredientMapper;
 import com.scnsoft.cocktails.service.IngredientService;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @Transactional
+@RequiredArgsConstructor
 public class IngredientFacade {
 	
-	@Autowired
-	private IngredientService ingredientService;
+	private final IngredientService ingredientService;
+	
+	private final IngredientMapper ingredientMapper;
 	
 	public Page<IngredientDTO> findAll(IngredientSearch search, Pageable pageable) {
 		
@@ -41,11 +43,13 @@ public class IngredientFacade {
 	}
 
 	public IngredientDTO save(IngredientDTO theIngredient) {
-		return new IngredientDTO(ingredientService.save(new Ingredient(theIngredient, false), false), false);
+		theIngredient.setId(null);
+		
+		return new IngredientDTO(ingredientService.save(ingredientMapper.toEntity(theIngredient, false), false), false);
 	}
 
 	public IngredientDTO update(IngredientDTO theIngredient) {
-		return new IngredientDTO(ingredientService.update(new Ingredient(theIngredient, false), false), false);
+		return new IngredientDTO(ingredientService.update(ingredientMapper.toEntity(theIngredient, false), false), false);
 	}
 
 	public void deleteById(UUID ingredientId) {

@@ -18,11 +18,11 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 public class CocktailIngredient extends AbstractEntity {
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "cocktail_id")
 	private Cocktail cocktail;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "ingredient_id")
 	private Ingredient ingredient;
 	

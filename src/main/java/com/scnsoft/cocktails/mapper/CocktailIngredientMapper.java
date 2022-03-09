@@ -1,19 +1,25 @@
 package com.scnsoft.cocktails.mapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.scnsoft.cocktails.dao.CocktailIngredientRepository;
 import com.scnsoft.cocktails.dto.CocktailIngredientDTO;
 import com.scnsoft.cocktails.entity.CocktailIngredient;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class CocktailIngredientMapper {
 
-    private final CocktailIngredientRepository cocktailIngredientRepository;
-    private final IngredientMapper ingredientMapper;
+	@Autowired
+    private CocktailIngredientRepository cocktailIngredientRepository;
+	
+	@Autowired
+    private CocktailMapper cocktailMapper;
+	
+	@Autowired
+    private IngredientMapper ingredientMapper;
 
-    public CocktailIngredient toEntity(CocktailIngredientDTO dto) {
+    public CocktailIngredient toEntity(CocktailIngredientDTO dto, boolean nullCocktail) {
         if(dto == null) {
             return null;
         }
@@ -23,7 +29,8 @@ public class CocktailIngredientMapper {
         } else {
             out = cocktailIngredientRepository.getById(dto.getId());
         }
-        out.setIngredient(ingredientMapper.toEntity(dto.getIngredient()));
+        out.setCocktail(nullCocktail ? null : cocktailMapper.toEntity(dto.getCocktailDTO(), true));
+        out.setIngredient(nullCocktail ? ingredientMapper.toEntity(dto.getIngredientDTO(), true) : null);
         out.setQuantity(dto.getQuantity());
         return out;
     }

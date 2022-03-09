@@ -57,12 +57,6 @@ public class CocktailService {
 
 	public Cocktail save(Cocktail cocktail, boolean nullCollection) {
 		return cocktailRepository.save(cocktail);
-			sCocktail.getCocktailIngredients().stream().forEach(ci -> {
-				Ingredient i = ci.getIngredient();
-			});
-				ci.setCocktail(sCocktail);
-			});
-		}
 	}
 	
 	public Cocktail update(Cocktail cocktail, boolean nullCollection) {
@@ -77,6 +71,8 @@ public class CocktailService {
 	}
 	
 	public void deleteById(UUID id) {
+		Cocktail cocktail = cocktailRepository.getById(id);
+		
 		cocktailRepository.deleteById(id);
 	}
 }

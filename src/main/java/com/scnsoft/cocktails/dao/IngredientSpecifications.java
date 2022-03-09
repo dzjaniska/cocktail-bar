@@ -24,7 +24,7 @@ public class IngredientSpecifications {
 	public static Specification<Ingredient> ingredientNameStartsWith(IngredientSearch search) {
 	    return new Specification<Ingredient>() {
 	      public Predicate toPredicate(Root<Ingredient> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-	        return cb.like(root.get(Ingredient.Fields.labelName).get("label" + search.getLang()), search.getName() + "%");
+	        return cb.like(root.get(Ingredient.Fields.name).get("label" + search.getLang()), search.getName() + "%");
 	      }
 	    };
 	  }
@@ -32,7 +32,7 @@ public class IngredientSpecifications {
 	public static Specification<Ingredient> ingredientDescriptionContains(IngredientSearch search) {
 	    return new Specification<Ingredient>() {
 	      public Predicate toPredicate(Root<Ingredient> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-	        return cb.like(root.get(Ingredient.Fields.labelDescription).get("label" + search.getLang()), "%" + search.getDescription() + "%");
+	        return cb.like(root.get(Ingredient.Fields.description).get("label" + search.getLang()), "%" + search.getDescription() + "%");
 	      }
 	    };
 	  }
