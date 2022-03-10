@@ -16,6 +16,11 @@
 	<description>Exercise project for learning Java frameworks</description>
 	<properties>
 		<java.version>17</java.version>
+		
+		<!-- Properties are prefixed with flyway. -->
+		<flyway.url>jdbc:mysql://localhost:3306/cocktails</flyway.url>
+        <flyway.user>root</flyway.user>
+        <flyway.password>password</flyway.password>
 	</properties>
 	<dependencies>
 		<dependency>
