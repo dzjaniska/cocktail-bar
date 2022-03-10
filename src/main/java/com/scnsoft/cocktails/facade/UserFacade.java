@@ -25,7 +25,6 @@ public class UserFacade {
 	private UserMapper userMapper;
 
 	public Page<UserDTO> findAll(Pageable pageable) {
-		
 		Page<User> page = userService
 				.findAll(pageable);
 		
@@ -38,8 +37,22 @@ public class UserFacade {
 	}
 
 	public UserDTO findById(UUID userId) {
-		
 		return new UserDTO(userService.findById(userId));
+	}
+
+	public UserDTO save(UserDTO theUser) {
+		theUser.setId(null);
+		
+		return new UserDTO(userService.save(userMapper.toEntity(theUser, true)));
+	}
+
+	public UserDTO update(UserDTO theUser) {
+		return new UserDTO(userService.update(userMapper.toEntity(theUser, false)));
+	}
+
+	public void deleteById(UUID userId) {
+		userService.deleteById(userId);
+		
 	}
 
 }
