@@ -1,7 +1,14 @@
 package com.scnsoft.cocktails.entity;
 
-public enum UserRole {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum UserRole implements GrantedAuthority {
 	ADMIN,
 	BARMEN,
-	USER
+	USER;
+
+	@Override
+	public String getAuthority() {
+		return toString();
+	}
 }
