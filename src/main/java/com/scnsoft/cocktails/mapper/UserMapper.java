@@ -1,6 +1,7 @@
 package com.scnsoft.cocktails.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.scnsoft.cocktails.dao.UserRepository;
@@ -12,6 +13,9 @@ public class UserMapper {
 	
 	@Autowired
     private UserRepository userRepository;
+	
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 
 	public User toEntity(UserDTO dto, boolean setLogin, boolean setPassword) {
         if (dto == null) {
@@ -28,7 +32,8 @@ public class UserMapper {
 			user.setLogin(dto.getLogin());
 		}
 		if (setPassword) {
-			user.setPassword(dto.getPassword());
+			String encodedPassword = passwordEncoder.encode(dto.getPassword());
+			user.setPassword(encodedPassword);
 		}
 		user.setRole(dto.getRole());
        
