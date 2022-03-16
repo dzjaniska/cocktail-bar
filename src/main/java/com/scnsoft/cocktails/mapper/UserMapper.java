@@ -13,7 +13,7 @@ public class UserMapper {
 	@Autowired
     private UserRepository userRepository;
 
-	public User toEntity(UserDTO dto, boolean setLogin) {
+	public User toEntity(UserDTO dto, boolean setLogin, boolean setPassword) {
         if (dto == null) {
             return null;
         }
@@ -27,8 +27,10 @@ public class UserMapper {
         if (setLogin) {
 			user.setLogin(dto.getLogin());
 		}
-		user.setPassword(dto.getPassword());
-        user.setRole(dto.getRole());
+		if (setPassword) {
+			user.setPassword(dto.getPassword());
+		}
+		user.setRole(dto.getRole());
        
         return user;
     }

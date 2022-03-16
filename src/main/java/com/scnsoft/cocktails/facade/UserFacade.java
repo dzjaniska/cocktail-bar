@@ -45,13 +45,14 @@ public class UserFacade {
 	public UserDTO save(UserDTO theUser) {
 		theUser.setId(null);
 		
-		return new UserDTO(userService.save(userMapper.toEntity(theUser, true)));
+		return new UserDTO(userService.save(userMapper.toEntity(theUser, true, true)));
 	}
 
 	public UserDTO update(HttpSession session, UUID userId, UserDTO theUser) {
 		theUser.setId(userId);
 		
-		return new UserDTO(userService.update(session, userMapper.toEntity(theUser, false)));
+		boolean setPassword = userId == session.getAttribute("userId") ? true : false;
+		return new UserDTO(userService.update(session, userMapper.toEntity(theUser, false, setPassword)));
 	}
 
 	public void deleteById(UUID userId) {
