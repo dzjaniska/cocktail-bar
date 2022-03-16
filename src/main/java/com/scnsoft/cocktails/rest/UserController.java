@@ -3,6 +3,8 @@ package com.scnsoft.cocktails.rest;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -10,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.scnsoft.cocktails.dto.CocktailDTO;
 import com.scnsoft.cocktails.dto.UserDTO;
 import com.scnsoft.cocktails.facade.UserFacade;
 
@@ -46,16 +49,21 @@ public class UserController {
 		return userFacade.save(theUser);
 	}
 	
-	@PutMapping
-	public UserDTO updateCocktail(@RequestBody UserDTO theUser) {
-		return userFacade.update(theUser);
+	@PutMapping("/{userId}")
+	public UserDTO updateUser(HttpSession session, @PathVariable UUID userId, @RequestBody UserDTO theUser) {
+		return userFacade.update(session, userId, theUser);
 	}
 	
 	@DeleteMapping("/{userId}")
-	public ResponseEntity<String> deleteCocktail(@PathVariable UUID userId) {
+	public ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
 		userFacade.deleteById(userId);
 		
 		return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<String> handleException(AccessDeniedException exc) {
+		return new ResponseEntity<>(exc.getMessage(), HttpStatus.UNAUTHORIZED);
 	}
 	
 	@ExceptionHandler

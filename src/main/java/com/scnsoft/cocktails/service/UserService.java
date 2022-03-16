@@ -2,9 +2,12 @@ package com.scnsoft.cocktails.service;
 
 import java.util.UUID;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import com.scnsoft.cocktails.dao.UserRepository;
@@ -34,7 +37,10 @@ public class UserService {
 		return userRepository.save(entity);
 	}
 
-	public User update(User entity) {
+	public User update(HttpSession session, User entity) {
+		if (!entity.getId().equals(session.getAttribute("userId")) && !UserRole.ADMIN.equals(session.getAttribute("userRole")))
+			throw new AccessDeniedException("Users are not allowed to update other users");
+		
 		return userRepository.save(entity);
 	}
 

@@ -42,6 +42,7 @@ public class AuthController {
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("userId" , user.getId());
+		session.setAttribute("userRole" , user.getRole());
 //		String sessionId = session.getId();
 		
 //		Cookie sessionCookie = new Cookie("JSESSIONID", sessionId);

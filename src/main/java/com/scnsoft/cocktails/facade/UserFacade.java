@@ -2,6 +2,8 @@ package com.scnsoft.cocktails.facade;
 
 import java.util.UUID;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -46,8 +48,10 @@ public class UserFacade {
 		return new UserDTO(userService.save(userMapper.toEntity(theUser, true)));
 	}
 
-	public UserDTO update(UserDTO theUser) {
-		return new UserDTO(userService.update(userMapper.toEntity(theUser, false)));
+	public UserDTO update(HttpSession session, UUID userId, UserDTO theUser) {
+		theUser.setId(userId);
+		
+		return new UserDTO(userService.update(session, userMapper.toEntity(theUser, false)));
 	}
 
 	public void deleteById(UUID userId) {
