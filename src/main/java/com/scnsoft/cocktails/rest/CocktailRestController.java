@@ -1,12 +1,15 @@
 package com.scnsoft.cocktails.rest;
 
-import java.util.Arrays;
-import java.util.List;
+import static com.scnsoft.cocktails.rest.RestControllerUtil.processLang;
+
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,14 +25,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.scnsoft.cocktails.aspect.ProfileTime;
 import com.scnsoft.cocktails.dto.CocktailDTO;
 import com.scnsoft.cocktails.dto.CocktailSearch;
 import com.scnsoft.cocktails.facade.CocktailFacade;
 
-import static com.scnsoft.cocktails.rest.RestControllerUtil.*;
-
 @RestController
 @RequestMapping("/api/cocktails")
+@ProfileTime
 public class CocktailRestController {
 	
 	@Autowired
@@ -46,6 +49,7 @@ public class CocktailRestController {
 	}
 	
 	@GetMapping("/{cocktailId}")
+	@Cacheable("cocktails")
 	public CocktailDTO getCocktail(@PathVariable UUID cocktailId) {
 		return cocktailFacade.findById(cocktailId);
 	}
@@ -56,11 +60,13 @@ public class CocktailRestController {
 	}
 	
 	@PutMapping
+	@CachePut(value = "cocktails", key = "#theCocktail.id")
 	public CocktailDTO updateCocktail(@RequestBody CocktailDTO theCocktail) {
 		return cocktailFacade.update(theCocktail);
 	}
 	
 	@DeleteMapping("/{cocktailId}")
+	@CacheEvict(value = "cocktails", key = "#cocktailId")
 	public ResponseEntity<String> deleteCocktail(@PathVariable UUID cocktailId) {
 		cocktailFacade.deleteById(cocktailId);
 		
