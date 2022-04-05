@@ -12,9 +12,11 @@ import org.hibernate.annotations.Type;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @MappedSuperclass
 @Getter @Setter
+@FieldNameConstants
 public class AbstractEntity {
 	@Id
 	@Type(type="uuid-char")
