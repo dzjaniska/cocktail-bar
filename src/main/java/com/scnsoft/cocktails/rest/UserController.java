@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +36,20 @@ public class UserController {
 	@GetMapping
 	public Page<UserDTO> getUsers(Pageable pageable) {
 		return userFacade.findAll(pageable);
+	}
+
+	@GetMapping("/current")
+	public UserDTO getCurrentUser(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if (session == null) {
+			return null;
+		}
+		Object userId = session.getAttribute("userId");
+		if (userId == null) {
+			return null;
+		}
+
+		return userFacade.findById(UUID.fromString(userId.toString()));
 	}
 
 	@GetMapping("/{userId}")

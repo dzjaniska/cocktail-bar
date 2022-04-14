@@ -32,7 +32,7 @@ public class Cocktail extends AbstractEntity {
 	@JoinColumn(name = "description_id")
 	private Label description;
 
-	@OneToMany(mappedBy = "cocktail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "cocktail", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
 	
 	public Cocktail(CocktailDTO cocktailDTO, boolean nullCollection) {

@@ -48,6 +48,11 @@ public class AuthController {
 //		Cookie sessionCookie = new Cookie("JSESSIONID", sessionId);
 //		response.addCookie(sessionCookie);
 	}
+
+	@PostMapping("/logout")
+	public void logout(HttpServletRequest request) throws ServletException {
+		request.logout();
+	}
 	
 	@ExceptionHandler
 	public ResponseEntity<String> handleException(BadCredentialsException exc) {
