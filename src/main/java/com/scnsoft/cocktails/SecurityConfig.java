@@ -1,10 +1,6 @@
 package com.scnsoft.cocktails;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
+import com.scnsoft.cocktails.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,24 +15,26 @@ import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-
-import com.scnsoft.cocktails.dao.UserRepository;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
-	
+
 	@Autowired
 	private DataSource dataSource;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
+
 		auth.userDetailsService(login -> userRepository.findByLogin(login)
         		.orElseThrow(
                 () -> new UsernameNotFoundException(
@@ -58,36 +56,38 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
           .and().csrf().disable();
 	}
 
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**")
-				.allowedOrigins("*")
-				.allowedMethods("*");
-	}
-	
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry
+        .addMapping("/**")
+        .allowedOrigins("http://localhost:3000", "https://powerful-brushlands-89576.herokuapp.com")
+        .allowCredentials(true)
+        .allowedMethods("*");
+  }
+
 	@Bean
     public PasswordEncoder passwordEncoder(){
-		
+
 		String idForEncode = "bcrypt";
 		Map encoders = new HashMap<>();
 		encoders.put(idForEncode, new BCryptPasswordEncoder());
 		encoders.put(null, NoOpPasswordEncoder.getInstance());
-		
+
 		return new DelegatingPasswordEncoder(idForEncode, encoders);
     }
-	
+
 //	@Bean
 //	public JdbcUserDetailsManager jdbcUserDetailsManager()
 //	{
 //		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
 //		jdbcUserDetailsManager.setDataSource(dataSource);
-//		
+//
 //		jdbcUserDetailsManager.setUserExistsSql("select login from user where login = ?");
-//		
+//
 //		return jdbcUserDetailsManager;
 //	}
-	
-//	@Override 
+
+//	@Override
 //	@Bean
 //    public AuthenticationManager authenticationManagerBean() throws Exception {
 //        return super.authenticationManagerBean();
