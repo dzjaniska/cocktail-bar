@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .anyRequest().authenticated()
           .and()
           .logout().logoutUrl("/api/logout").logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))).permitAll()
-          .and().cors().disable().csrf().disable();
+          .and().csrf().disable();
 	}
 	
 	@Bean
