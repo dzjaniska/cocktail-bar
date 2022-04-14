@@ -1,0 +1,37 @@
+[
+	{
+		"cocktail_id": "2ae4827c-9322-11ec-96e5-fcaa14ac5ccc",
+		"ingredient_id": "2082eb6c-9321-11ec-96e5-fcaa14ac5ccc",
+		"quantity": 80
+	},
+	{
+		"cocktail_id": "2ae4827c-9322-11ec-96e5-fcaa14ac5ccc",
+		"ingredient_id": "20846760-9321-11ec-96e5-fcaa14ac5ccc",
+		"quantity": 300
+	},
+	{
+		"cocktail_id": "2ae4827c-9322-11ec-96e5-fcaa14ac5ccc",
+		"ingredient_id": "20850ca9-9321-11ec-96e5-fcaa14ac5ccc",
+		"quantity": 1
+	},
+	{
+		"cocktail_id": "2ae4827c-9322-11ec-96e5-fcaa14ac5ccc",
+		"ingredient_id": "2085db98-9321-11ec-96e5-fcaa14ac5ccc",
+		"quantity": 1
+	},
+	{
+		"cocktail_id": "2ae4827c-9322-11ec-96e5-fcaa14ac5ccc",
+		"ingredient_id": "20867c31-9321-11ec-96e5-fcaa14ac5ccc",
+		"quantity": 1
+	},
+	{
+		"cocktail_id": "2ae4827c-9322-11ec-96e5-fcaa14ac5ccc",
+		"ingredient_id": "20870e6e-9321-11ec-96e5-fcaa14ac5ccc",
+		"quantity": 12
+	},
+	{
+		"cocktail_id": "2ae4827c-9322-11ec-96e5-fcaa14ac5ccc",
+		"ingredient_id": "20879de7-9321-11ec-96e5-fcaa14ac5ccc",
+		"quantity": 10
+	}
+]

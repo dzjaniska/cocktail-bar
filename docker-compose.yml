@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  db:
+    image: mysql
+    container_name: mysql_compose
+#    ports:
+#      - 3307:3306
+    networks:
+      - net
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+#    environment:
+#      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true
+    volumes:
+      - C:\Users\etupilov\Desktop\Мое\Проекты\Cocktails\volumes\mysql_volume:/var/lib/mysql
+#      - C:\Users\etupilov\Desktop\Мое\Проекты\Cocktails\volumes\mysql_config_volume:/etc/mysql/conf.d
+  backend:
+    image: cocktails
+    container_name: cocktails_compose
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/cocktails
+    networks:
+      - net
+    depends_on:
+      - db
+    command: ./wait-for-it.sh db:3306 -- java -jar cocktails-0.0.1.war
+networks:
+  net:
+
+     

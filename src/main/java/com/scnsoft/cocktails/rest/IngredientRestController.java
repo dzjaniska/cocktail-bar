@@ -1,12 +1,15 @@
 package com.scnsoft.cocktails.rest;
 
-import java.util.List;
+import static com.scnsoft.cocktails.rest.RestControllerUtil.processLang;
+
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,41 +22,52 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.scnsoft.cocktails.dto.TagDTO;
-import com.scnsoft.cocktails.facade.TagFacade;
+import com.scnsoft.cocktails.dto.IngredientDTO;
+import com.scnsoft.cocktails.dto.IngredientSearch;
+import com.scnsoft.cocktails.facade.IngredientFacade;
 
 @RestController
-@RequestMapping("/api/tags")
-public class TagRestController {
+@RequestMapping("/api/ingredients")
+public class IngredientRestController {
 	
 	@Autowired
-	private TagFacade tagFacade;
+	private IngredientFacade ingredientFacade;
 	
 	@GetMapping
-	public List<TagDTO> getTags() {
-		return tagFacade.findAll();
+	public Page<IngredientDTO> getIngredient(IngredientSearch search, Pageable pageable) {
+		
+		String lang = search.getLang();
+		lang = processLang(lang);
+		search.setLang(lang);
+		
+		return ingredientFacade.findAll(search, pageable);
 	}
 	
-	@GetMapping("/{tagId}")
-	public TagDTO getTag(@PathVariable UUID tagId) {
-		return tagFacade.getById(tagId);
+	@GetMapping("/{ingredientId}")
+	public IngredientDTO getIngredient(@PathVariable UUID ingredientId) {
+		return ingredientFacade.findById(ingredientId);
 	}
 	
 	@PostMapping
-	public TagDTO addTag(@RequestBody TagDTO theTag) {
-		return tagFacade.save(theTag);
+	public IngredientDTO addIngredient(@RequestBody IngredientDTO theIngredient) {
+		return ingredientFacade.save(theIngredient);
 	}
 	
 	@PutMapping
-	public TagDTO updateTag(@RequestBody TagDTO theTag) {
-		return tagFacade.update(theTag);
+	public IngredientDTO updateIngredient(@RequestBody IngredientDTO theIngredient) {
+		return ingredientFacade.update(theIngredient);
 	}
 	
-	@DeleteMapping("/{tagId}")
-	public ResponseEntity<String> deleteTag(@PathVariable UUID tagId) {
-		tagFacade.deleteById(tagId);
+	@DeleteMapping("/{ingredientId}")
+	public ResponseEntity<String> deleteIngredient(@PathVariable UUID ingredientId) {
+		ingredientFacade.deleteById(ingredientId);
 		
 		return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<String> handleException(InvalidLangException exc) {
+		return new ResponseEntity<>(exc.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler

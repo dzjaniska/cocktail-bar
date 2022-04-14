@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.scnsoft.cocktails.dto.LabelDTO;
 import com.scnsoft.cocktails.entity.Label;
-import com.scnsoft.cocktails.entity.LabelDTO;
 import com.scnsoft.cocktails.service.LabelService;
 
 @Component

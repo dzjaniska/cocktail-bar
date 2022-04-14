@@ -2,7 +2,6 @@ package com.scnsoft.cocktails.entity;
 
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +12,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
+import com.scnsoft.cocktails.dto.TagDTO;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,21 +22,7 @@ import lombok.Setter;
 //@Proxy(lazy = false)
 @NoArgsConstructor
 @Getter @Setter 
-public class Tag {
-	@Id
-	@Type(type="uuid-char")
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(
-        name = "uuid",
-        strategy = "uuid2",
-        parameters = {
-            @Parameter(
-                name = "uuid_gen_strategy_class",
-                value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-            )
-        }
-    )
-    private UUID id;
+public class Tag extends AbstractEntity {
 	
 	@OneToOne//(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "name_id")
@@ -43,6 +30,6 @@ public class Tag {
 	
 	public Tag(TagDTO tagDTO) {
 		id = tagDTO.getId();
-		label = new Label(tagDTO.getLabelDTO());
+		label = new Label(tagDTO.getLabel());
 	}
 }
