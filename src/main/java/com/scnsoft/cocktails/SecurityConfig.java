@@ -62,7 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         .addMapping("/**")
         .allowedOrigins("http://localhost:3000", "https://powerful-brushlands-89576.herokuapp.com")
         .allowCredentials(true)
-        .allowedMethods("*");
+				.allowedHeaders("Origin", "Content-Type", "X-Auth-Token")
+        .allowedMethods("POST", "GET", "OPTIONS", "DELETE", "PUT");
   }
 
 	@Bean
