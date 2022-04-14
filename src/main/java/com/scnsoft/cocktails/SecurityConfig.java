@@ -4,6 +4,7 @@ import com.scnsoft.cocktails.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 		http
         .authorizeRequests()
           .antMatchers("/api/auth").permitAll()
+					.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
           .anyRequest().authenticated()
           .and()
           .logout().logoutUrl("/api/logout").logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))).permitAll()
