@@ -12,12 +12,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.scnsoft.cocktails.dao.SetRepository;
 import com.scnsoft.cocktails.dao.SetSpecifications;
 import com.scnsoft.cocktails.dao.UserRepository;
-import com.scnsoft.cocktails.dto.SetDTO;
 import com.scnsoft.cocktails.dto.SetSearch;
 import com.scnsoft.cocktails.entity.Set;
 import com.scnsoft.cocktails.entity.SetStatus;
@@ -85,6 +85,8 @@ public class SetService {
 
 		if ((UserRole)session.getAttribute("userRole") != UserRole.USER)
 			throw new UserRoleException("Only user can join sets");
+		if (setRepository.countByUserIdWhereActive((UUID)session.getAttribute("userId")) > 0)
+			throw new SetStatusException("An active set already detected for the user");
 		Set set = setRepository.getById(setId);
 		if (set.getStatus() != SetStatus.ACTIVE)
 			throw new SetStatusException("Set status must be active");
@@ -109,6 +111,11 @@ public class SetService {
 
 		return setRepository.save(set);
 	}
+	
+	@Scheduled(cron = "0 0 12 * * ?")
+	public void closeOld() {
+		setRepository.closeWhereAgeMoreThanTwoDays();
+	}
 
 	public void delete(HttpSession session, UUID setId) {
 		
@@ -121,5 +128,19 @@ public class SetService {
 			throw new UserRoleException("Only owning barmen can delete sets");
 		
 		setRepository.deleteById(setId);
+	}
+
+	public Set leave(HttpSession session, UUID setId, String password) {
+		if ((UserRole)session.getAttribute("userRole") != UserRole.USER)
+			throw new UserRoleException("Only user can leave sets");
+		Set set = setRepository.getById(setId);
+		if (set.getStatus() != SetStatus.ACTIVE)
+			throw new SetStatusException("Set status must be active");
+		if (!set.getPassword().equals(password))
+			throw new AuthorizationException("Incorrect password");
+		
+		UUID userId = (UUID)session.getAttribute("userId");
+		set.getUsers().remove(userRepository.getById(userId));
+		return setRepository.save(set);
 	}
 }

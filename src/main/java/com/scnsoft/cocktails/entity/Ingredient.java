@@ -30,7 +30,7 @@ public class Ingredient extends AbstractEntity {
 	@JoinColumn(name = "description_id")
 	private Label description;
 	
-	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CocktailIngredient> ingredientCocktails;
 
 	public Ingredient(IngredientDTO ingredientDTO, boolean nullCollection) {

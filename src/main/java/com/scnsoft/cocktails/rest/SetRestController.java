@@ -56,6 +56,11 @@ public class SetRestController {
 		return setFacade.join(session, setId, password);
 	}
 	
+	@PostMapping("/{setId}/leave")
+	public SetDTO leaveSet(HttpSession session, @PathVariable UUID setId, @RequestBody String password) {
+		return setFacade.leave(session, setId, password);
+	}
+	
 	@PutMapping("/{setId}")
 	public SetDTO updateSet(HttpSession session, @PathVariable UUID setId, @RequestBody SetDTO theSet) {
 		return setFacade.update(session, setId, theSet);

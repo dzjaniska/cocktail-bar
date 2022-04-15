@@ -64,4 +64,8 @@ public class SetFacade {
 		setService.delete(session, setId);
 	}
 
+	public SetDTO leave(HttpSession session, UUID setId, String password) {
+		return new SetDTO(setService.leave(session, setId, password));
+	}
+
 }
