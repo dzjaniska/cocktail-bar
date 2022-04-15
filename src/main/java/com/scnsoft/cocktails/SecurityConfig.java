@@ -62,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
   public void addCorsMappings(CorsRegistry registry) {
     registry
         .addMapping("/**")
-        .allowedOrigins("http://localhost:3000", "https://powerful-brushlands-89576.herokuapp.com")
+				.allowedOriginPatterns("*")
         .allowCredentials(true)
 				.allowedHeaders("Origin", "Content-Type", "X-Auth-Token")
         .allowedMethods("POST", "GET", "OPTIONS", "DELETE", "PUT");
