@@ -49,7 +49,6 @@ public class CocktailRestController {
 	}
 	
 	@GetMapping("/{cocktailId}")
-	@Cacheable("cocktails")
 	public CocktailDTO getCocktail(@PathVariable UUID cocktailId) {
 		return cocktailFacade.findById(cocktailId);
 	}
@@ -60,13 +59,11 @@ public class CocktailRestController {
 	}
 	
 	@PutMapping
-	@CachePut(value = "cocktails", key = "#theCocktail.id")
 	public CocktailDTO updateCocktail(@RequestBody CocktailDTO theCocktail) {
 		return cocktailFacade.update(theCocktail);
 	}
 	
 	@DeleteMapping("/{cocktailId}")
-	@CacheEvict(value = "cocktails", key = "#cocktailId")
 	public ResponseEntity<String> deleteCocktail(@PathVariable UUID cocktailId) {
 		cocktailFacade.deleteById(cocktailId);
 		

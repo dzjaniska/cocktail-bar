@@ -1,1 +1,1 @@
-web: ./mvnw spring-boot:run
+web: ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-Xms256m -Xmx500m"

@@ -11,13 +11,13 @@ import com.scnsoft.cocktails.entity.Ingredient;
 
 @Component
 public class IngredientMapper {
-	
+
 	@Autowired
 	private CocktailIngredientMapper cocktailIngredientMapper;
-	
+
 	@Autowired
     private IngredientRepository ingredientRepository;
-	
+
 	@Autowired
     private LabelMapper labelMapper;
 
@@ -35,7 +35,7 @@ public class IngredientMapper {
         out.setUnit(dto.getUnit());
         out.setDescription(labelMapper.toEntity(dto.getDescription()));
         out.setName(labelMapper.toEntity(dto.getName()));
-        if (!nullCollection) {
+        if (!nullCollection && out.getIngredientCocktails() != null) {
         	out.getIngredientCocktails().clear();
         	out.getIngredientCocktails().addAll(
                     dto.getIngredientCocktails() != null ? dto.getIngredientCocktails().stream()
@@ -43,7 +43,7 @@ public class IngredientMapper {
                             .peek(ic -> ic.setIngredient(out))
                             .toList() : new ArrayList<>());
         }
-        
+
         return out;
     }
 }
