@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.jaxb.SpringDataJaxb.OrderDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,57 +21,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.scnsoft.cocktails.dto.CreateSetDTO;
-import com.scnsoft.cocktails.dto.SetDTO;
-import com.scnsoft.cocktails.dto.SetSearch;
-import com.scnsoft.cocktails.facade.SetFacade;
+import com.scnsoft.cocktails.dto.CreateOrderDto;
+import com.scnsoft.cocktails.dto.OrderDTO;
+import com.scnsoft.cocktails.facade.OrderFacade;
 import com.scnsoft.cocktails.service.AuthorizationException;
 import com.scnsoft.cocktails.service.StatusException;
 import com.scnsoft.cocktails.service.UserRoleException;
 
 @RestController
-@RequestMapping("/api/sets")
-public class SetRestController {
-
+@RequestMapping("/api/orders")
+public class OrderRestController {
+	
 	@Autowired
-	private SetFacade setFacade;
-	
-	@GetMapping
-	public Page<SetDTO> getSets(HttpSession session, SetSearch search, Pageable pageable) {
-		return setFacade.findAll(session, search, pageable);
-	}
-	
+	private OrderFacade orderFacade;
+
 	@GetMapping("/{setId}")
-	public SetDTO getSet(HttpSession session, @PathVariable UUID setId) {
-		return setFacade.findById(session, setId);
+	public Page<OrderDTO> getOrders(HttpSession session, @PathVariable UUID setId, Pageable pageable) {
+		return orderFacade.findAll(session, setId, pageable);
+	}
+
+	@GetMapping("/single/{orderId}")
+	public OrderDTO getOrderById(HttpSession session, @PathVariable UUID orderId) {
+		return orderFacade.findById(session, orderId);
 	}
 	
 	@PostMapping
-	public SetDTO addSet(HttpSession session, @RequestBody CreateSetDTO theSet) {
-		return setFacade.save(session, theSet);
+	public OrderDTO createOrder(HttpSession session, @RequestBody CreateOrderDto createOrderDto) {
+		return orderFacade.save(session, createOrderDto);
 	}
 	
-	@PostMapping("/{setId}/join")
-	public SetDTO joinSet(HttpSession session, @PathVariable UUID setId, @RequestBody String password) {
-		return setFacade.join(session, setId, password);
-	}
-	
-	@PostMapping("/{setId}/leave")
-	public SetDTO leaveSet(HttpSession session, @PathVariable UUID setId, @RequestBody String password) {
-		return setFacade.leave(session, setId, password);
-	}
-	
-	@PutMapping("/{setId}")
-	public SetDTO updateSet(HttpSession session, @PathVariable UUID setId, @RequestBody SetDTO theSet) {
-		return setFacade.update(session, setId, theSet);
-	}
-	
-	@DeleteMapping("/{setId}")
-	public ResponseEntity<String> deleteSet(HttpSession session, @PathVariable UUID setId) {
-		
-		setFacade.delete(session, setId);
-		
-		return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+	@PutMapping("/{orderId}")
+	public OrderDTO updateOrder(HttpSession session, @PathVariable UUID orderId, @RequestBody OrderDTO orderDto) {
+		return orderFacade.update(session, orderId, orderDto);
 	}
 	
 	@ExceptionHandler

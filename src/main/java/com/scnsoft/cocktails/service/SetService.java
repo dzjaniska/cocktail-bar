@@ -86,10 +86,10 @@ public class SetService {
 		if ((UserRole)session.getAttribute("userRole") != UserRole.USER)
 			throw new UserRoleException("Only user can join sets");
 		if (setRepository.countByUserIdWhereActive((UUID)session.getAttribute("userId")) > 0)
-			throw new SetStatusException("An active set already detected for the user");
+			throw new StatusException("An active set already detected for the user");
 		Set set = setRepository.getById(setId);
 		if (set.getStatus() != SetStatus.ACTIVE)
-			throw new SetStatusException("Set status must be active");
+			throw new StatusException("Set status must be active");
 		if (!set.getPassword().equals(password))
 			throw new AuthorizationException("Incorrect password");
 		
@@ -107,7 +107,7 @@ public class SetService {
 		if (role == UserRole.BARMEN && !userId.equals(set.getOwner().getId()))
 			throw new UserRoleException("Only owning barmen can update sets");
 		if (set.getStatus() == SetStatus.CLOSED)
-			throw new SetStatusException("Closed sets can't be updated");
+			throw new StatusException("Closed sets can't be updated");
 
 		return setRepository.save(set);
 	}
@@ -135,7 +135,7 @@ public class SetService {
 			throw new UserRoleException("Only user can leave sets");
 		Set set = setRepository.getById(setId);
 		if (set.getStatus() != SetStatus.ACTIVE)
-			throw new SetStatusException("Set status must be active");
+			throw new StatusException("Set status must be active");
 		if (!set.getPassword().equals(password))
 			throw new AuthorizationException("Incorrect password");
 		

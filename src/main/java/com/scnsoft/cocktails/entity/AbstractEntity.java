@@ -45,9 +45,9 @@ public class AbstractEntity {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!getClass().isInstance(obj) && !obj.getClass().isInstance(this))
 			return false;
 		AbstractEntity other = (AbstractEntity) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(getId(), other.getId());
 	}
 }

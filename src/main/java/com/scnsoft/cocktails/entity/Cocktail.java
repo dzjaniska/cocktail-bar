@@ -2,6 +2,7 @@ package com.scnsoft.cocktails.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.*;
 
@@ -45,5 +46,9 @@ public class Cocktail extends AbstractEntity {
 				.stream()
 				.map(ci -> new CocktailIngredient(ci, true))
 				.toList();
+	}
+
+	public Cocktail(UUID id) {
+		this.id = id;
 	}
 }

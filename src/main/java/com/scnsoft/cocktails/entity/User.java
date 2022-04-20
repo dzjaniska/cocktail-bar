@@ -2,6 +2,7 @@ package com.scnsoft.cocktails.entity;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -34,6 +35,10 @@ public class User extends AbstractEntity implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
 
+	public User(UUID id) {
+		this.id = id;
+	}
+	
 	@Override
 	public Collection<UserRole> getAuthorities() {
 		return Arrays.asList(role);
