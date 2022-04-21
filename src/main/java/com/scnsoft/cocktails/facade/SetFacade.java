@@ -57,11 +57,15 @@ public class SetFacade {
 		
 		theSet.setId(setId);
 		
-		return new SetDTO(setService.update(session, setMapper.toEntity(theSet)));
+		return new SetDTO(setService.update(session, setMapper.toEntity(theSet, true)));
 	}
 
 	public void delete(HttpSession session, UUID setId) {
 		setService.delete(session, setId);
+	}
+
+	public SetDTO leave(HttpSession session, UUID setId, String password) {
+		return new SetDTO(setService.leave(session, setId, password));
 	}
 
 }

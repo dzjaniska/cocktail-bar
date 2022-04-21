@@ -1,5 +1,6 @@
 package com.scnsoft.cocktails.entity;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import javax.persistence.GeneratedValue;
@@ -32,4 +33,21 @@ public class AbstractEntity {
         }
     )
 	protected UUID id;
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!getClass().isInstance(obj) && !obj.getClass().isInstance(this))
+			return false;
+		AbstractEntity other = (AbstractEntity) obj;
+		return Objects.equals(getId(), other.getId());
+	}
 }

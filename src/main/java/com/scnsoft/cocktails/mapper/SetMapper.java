@@ -38,7 +38,7 @@ public class SetMapper {
 		return set;
 	}
 
-	public Set toEntity(SetDTO dto) {
+	public Set toEntity(SetDTO dto, boolean changePassword) {
 		
 		if (dto == null) {
             return null;
@@ -52,13 +52,15 @@ public class SetMapper {
 		
 		set.setOwner(userMapper.toEntity(dto.getOwner(), false, false));
 		set.setDate(dto.getDate());
-		set.setPassword(dto.getPassword());
+		if (changePassword) {
+			set.setPassword(dto.getPassword());
+		}
 		set.setStatus(dto.getStatus());
 		set.getUsers().clear();
 		set.getUsers().addAll(dto.getUsers() != null ? dto.getUsers()
 				.stream()
 				.map(u -> userMapper.toEntity(u, false, false))
-				.toList() : new ArrayList());
+				.toList() : new ArrayList<>());
 		set.getCocktails().clear();
 		set.getCocktails().addAll(dto.getCocktails() != null ? dto.getCocktails()
 				.stream()
