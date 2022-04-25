@@ -42,7 +42,7 @@ public class SetDTO {
 		cocktails = set
 			.getCocktails()
 			.stream()
-			.map(c -> new CocktailDTO(c, false))
+			.map(c -> new CocktailDTO(c, false, false))
 			.toList();
 	}
 }

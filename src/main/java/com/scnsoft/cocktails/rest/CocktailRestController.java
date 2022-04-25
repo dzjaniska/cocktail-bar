@@ -65,7 +65,7 @@ public class CocktailRestController {
 	
 	@DeleteMapping("/{cocktailId}")
 	public ResponseEntity<String> deleteCocktail(@PathVariable UUID cocktailId) {
-		cocktailFacade.deleteById(cocktailId);
+		cocktailFacade.delete(cocktailId);
 		
 		return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
 	}

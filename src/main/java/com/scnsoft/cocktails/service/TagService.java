@@ -63,7 +63,12 @@ public class TagService {
 		return tagRepository.save(theTag);
 	}
 
-	public void deleteById(UUID tagId) {
-		tagRepository.deleteById(tagId);
+	public void delete(Tag tag) {
+		tag.getCocktails()
+		.stream()
+		.forEach(c -> c.getTags().remove(tag));
+		tag.getCocktails().clear();
+		
+		tagRepository.delete(tag);
 	}
 }

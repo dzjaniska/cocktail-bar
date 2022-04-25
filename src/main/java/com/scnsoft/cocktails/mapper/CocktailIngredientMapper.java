@@ -29,7 +29,7 @@ public class CocktailIngredientMapper {
         } else {
             out = cocktailIngredientRepository.getById(dto.getId());
         }
-        out.setCocktail(nullCocktail ? null : cocktailMapper.toEntity(dto.getCocktailDTO(), true));
+        out.setCocktail(nullCocktail ? null : cocktailMapper.toEntity(dto.getCocktailDTO(), true, false));
         out.setIngredient(nullCocktail ? ingredientMapper.toEntity(dto.getIngredientDTO(), true) : null);
         out.setQuantity(dto.getQuantity());
         return out;
