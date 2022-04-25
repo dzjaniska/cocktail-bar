@@ -34,7 +34,7 @@ public class OrderDTO {
 		status = order.getStatus();
 		time = order.getTime();
 		set = new SetDTO(order.getSet());
-		cocktail = new CocktailDTO(order.getCocktail(), false);
+		cocktail = new CocktailDTO(order.getCocktail(), false, false);
 		user = new UserDTO(order.getUser());
 	}
 }

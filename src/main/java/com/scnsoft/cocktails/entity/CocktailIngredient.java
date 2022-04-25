@@ -30,7 +30,7 @@ public class CocktailIngredient extends AbstractEntity {
 
 	public CocktailIngredient(CocktailIngredientDTO ci, boolean nullCocktail) {
 		id = ci.getId();
-		cocktail = nullCocktail ? null : new Cocktail(ci.getCocktailDTO(), true);
+		cocktail = nullCocktail ? null : new Cocktail(ci.getCocktailDTO(), true, false);
 		ingredient = nullCocktail ? new Ingredient(ci.getIngredientDTO(), true) : null;
 		quantity = ci.getQuantity();
 	}

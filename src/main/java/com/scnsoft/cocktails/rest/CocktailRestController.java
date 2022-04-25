@@ -68,7 +68,7 @@ public class CocktailRestController {
 	@DeleteMapping("/{cocktailId}")
 	@CacheEvict(value = "cocktails", key = "#cocktailId")
 	public ResponseEntity<String> deleteCocktail(@PathVariable UUID cocktailId) {
-		cocktailFacade.deleteById(cocktailId);
+		cocktailFacade.delete(cocktailId);
 		
 		return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
 	}

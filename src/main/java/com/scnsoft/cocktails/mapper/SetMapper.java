@@ -64,7 +64,7 @@ public class SetMapper {
 		set.getCocktails().clear();
 		set.getCocktails().addAll(dto.getCocktails() != null ? dto.getCocktails()
 				.stream()
-				.map(c -> cocktailMapper.toEntity(c, true))
+				.map(c -> cocktailMapper.toEntity(c, true, false))
 				.toList() : new ArrayList<>());
 		
 		return set;

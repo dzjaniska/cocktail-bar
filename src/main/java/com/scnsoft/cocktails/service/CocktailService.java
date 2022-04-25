@@ -70,9 +70,12 @@ public class CocktailService {
 			return update(cocktail, nullCollection);
 	}
 	
-	public void deleteById(UUID id) {
-		Cocktail cocktail = cocktailRepository.getById(id);
+	public void delete(Cocktail cocktail) {
+		cocktail.getTags()
+		.stream()
+		.forEach(t -> t.getCocktails().remove(cocktail));
+		cocktail.getTags().clear();
 		
-		cocktailRepository.deleteById(id);
+		cocktailRepository.delete(cocktail);
 	}
 }

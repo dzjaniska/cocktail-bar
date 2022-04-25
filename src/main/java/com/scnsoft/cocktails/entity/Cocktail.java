@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @NoArgsConstructor
@@ -36,7 +38,12 @@ public class Cocktail extends AbstractEntity {
 	@OneToMany(mappedBy = "cocktail", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
 	
-	public Cocktail(CocktailDTO cocktailDTO, boolean nullCollection) {
+	@ManyToMany(fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	@JoinTable(name = "cocktail_tag", joinColumns = @JoinColumn(name = "cocktail_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+	private List<Tag> tags = new ArrayList<>();
+	
+	public Cocktail(CocktailDTO cocktailDTO, boolean nullCollection, boolean nullTags) {
 		id = cocktailDTO.getId();
 		image = cocktailDTO.getImage();
 		name = new Label(cocktailDTO.getName());
@@ -45,6 +52,11 @@ public class Cocktail extends AbstractEntity {
 				.getCocktailIngredients()
 				.stream()
 				.map(ci -> new CocktailIngredient(ci, true))
+				.toList();
+		tags = nullTags ? null : cocktailDTO
+				.getTags()
+				.stream()
+				.map(t -> new Tag(t))
 				.toList();
 	}
 

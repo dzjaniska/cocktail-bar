@@ -33,27 +33,27 @@ public class CocktailFacade {
 		
 		return new PageImpl<>(page
 				.stream()
-				.map(c -> new CocktailDTO(c, false))
+				.map(c -> new CocktailDTO(c, false, false))
 				.toList(),
 				pageable, 
 				page.getTotalElements());
 	}
 	
 	public CocktailDTO findById(UUID id) {
-		return new CocktailDTO(cocktailService.findById(id), false);
+		return new CocktailDTO(cocktailService.findById(id), false, false);
 	}
 
 	public CocktailDTO save(CocktailDTO theCocktail) {
 		theCocktail.setId(null);
 		
-		return new CocktailDTO(cocktailService.save(cocktailMapper.toEntity(theCocktail, false), false), false);
+		return new CocktailDTO(cocktailService.save(cocktailMapper.toEntity(theCocktail, false, false), false), false, false);
 	}
 	
 	public CocktailDTO update(CocktailDTO theCocktail) {
-		return new CocktailDTO(cocktailService.update(cocktailMapper.toEntity(theCocktail, false), false), false);
+		return new CocktailDTO(cocktailService.update(cocktailMapper.toEntity(theCocktail, false, false), false), false, false);
 	}
 	
-	public void deleteById(UUID id) {
-		cocktailService.deleteById(id);
+	public void delete(UUID id) {
+		cocktailService.delete(cocktailMapper.toEntity(new CocktailDTO(id), true, true));
 	}
 }

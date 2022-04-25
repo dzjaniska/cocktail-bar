@@ -22,7 +22,9 @@ public class CocktailDTO {
 
 	private List<CocktailIngredientDTO> cocktailIngredients;
 	
-	public CocktailDTO(Cocktail cocktail, boolean nullCollection) {
+	private List<TagDTO> tags;
+	
+	public CocktailDTO(Cocktail cocktail, boolean nullCollection, boolean nullTags) {
 		id = cocktail.getId();
 		image = cocktail.getImage();
 		name = new LabelDTO(cocktail.getName());
@@ -35,5 +37,14 @@ public class CocktailDTO {
 				.stream()
 				.map(ci -> new CocktailIngredientDTO(ci, true))
 				.toList();
+		tags = nullTags ? null : cocktail
+				.getTags()
+				.stream()
+				.map(t -> new TagDTO(t, true))
+				.toList();
+	}
+
+	public CocktailDTO(UUID id) {
+		this.id = id;
 	}
 }

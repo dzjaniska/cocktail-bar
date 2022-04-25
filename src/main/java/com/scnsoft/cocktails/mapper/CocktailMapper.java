@@ -21,8 +21,11 @@ public class CocktailMapper {
 	
 	@Autowired
     private LabelMapper labelMapper;
+	
+	@Autowired
+    private TagMapper tagMapper;
 
-    public Cocktail toEntity(CocktailDTO dto, boolean nullCollection) {
+    public Cocktail toEntity(CocktailDTO dto, boolean nullCollection, boolean nullTags) {
         if(dto == null) {
             return null;
         }
@@ -42,6 +45,16 @@ public class CocktailMapper {
                              .map(ci -> cocktailIngredientMapper.toEntity(ci, true))
                              .peek(ci -> ci.setCocktail(cocktail))
                              .toList() : new ArrayList<>());
+        }
+        if (!nullTags) {
+        	cocktail.getTags().clear();
+        	cocktail.getTags().addAll(
+        			dto.getTags() != null ? dto.getTags().stream()
+        					.map(t -> tagMapper.toEntity(t, false))
+        					.peek(t -> {if (!t.getCocktails().contains(cocktail))
+        						t.getCocktails().add(cocktail);
+        						})
+        					.toList() : new ArrayList<>());
         }
        
         return cocktail;

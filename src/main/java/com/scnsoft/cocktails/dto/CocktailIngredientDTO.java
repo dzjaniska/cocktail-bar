@@ -23,7 +23,7 @@ public class CocktailIngredientDTO {
 	public CocktailIngredientDTO(CocktailIngredient cocktailIngredient, boolean nullCocktail) {
 		
 		id = cocktailIngredient.getId();
-		cocktailDTO = nullCocktail ? null : new CocktailDTO(cocktailIngredient.getCocktail(), true);
+		cocktailDTO = nullCocktail ? null : new CocktailDTO(cocktailIngredient.getCocktail(), true, false);
 		ingredientDTO = nullCocktail ? new IngredientDTO(cocktailIngredient.getIngredient(), true) : null;
 		quantity = cocktailIngredient.getQuantity();
 	}
