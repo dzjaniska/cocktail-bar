@@ -36,6 +36,7 @@ public class Cocktail extends AbstractEntity {
 	private Label description;
 
 	@OneToMany(mappedBy = "cocktail", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy
 	private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.EAGER)

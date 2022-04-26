@@ -33,7 +33,7 @@ public class CocktailFacade {
 		
 		return new PageImpl<>(page
 				.stream()
-				.map(c -> new CocktailDTO(c, false, false))
+				.map(c -> new CocktailDTO(c, true, false))
 				.toList(),
 				pageable, 
 				page.getTotalElements());

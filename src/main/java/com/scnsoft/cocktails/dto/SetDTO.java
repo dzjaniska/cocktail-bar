@@ -28,21 +28,15 @@ public class SetDTO {
 	
 	private List<CocktailDTO> cocktails;
 	
-	public SetDTO(Set set) {
+	public SetDTO(Set set, boolean nullCollections) {
 		id = set.getId();
 		owner = new UserDTO(set.getOwner());
 		date = set.getDate();
 		password = null;
 		status = set.getStatus();
-		users = set
-			.getUsers()
-			.stream()
-			.map(u -> new UserDTO(u))
-			.toList();
-		cocktails = set
-			.getCocktails()
-			.stream()
-			.map(c -> new CocktailDTO(c, false, false))
-			.toList();
+		if (!nullCollections) {
+			users = set.getUsers().stream().map(u -> new UserDTO(u)).toList();
+			cocktails = set.getCocktails().stream().map(c -> new CocktailDTO(c, false, false)).toList();
+		}
 	}
 }

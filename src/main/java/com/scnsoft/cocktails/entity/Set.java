@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
@@ -49,5 +50,6 @@ public class Set extends AbstractEntity {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinTable(name = "cocktail_set", joinColumns = @JoinColumn(name = "set_id"), inverseJoinColumns = @JoinColumn(name = "cocktail_id"))
+	@OrderBy
 	private List<Cocktail> cocktails;
 }
