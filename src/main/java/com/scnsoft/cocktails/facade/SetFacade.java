@@ -35,29 +35,29 @@ public class SetFacade {
 		
 		return new PageImpl<>(page
 				.stream()
-				.map(s -> new SetDTO(s))
+				.map(s -> new SetDTO(s, true))
 				.toList(),
 				pageable, 
 				page.getTotalElements());
 	}
 
 	public SetDTO findById(HttpSession session, UUID setId) {
-		return new SetDTO(setService.findById(session, setId));
+		return new SetDTO(setService.findById(session, setId), false);
 	}
 
 	public SetDTO save(HttpSession session, CreateSetDTO theSet) {
-		return new SetDTO(setService.save(session, setMapper.toEntity(theSet)));
+		return new SetDTO(setService.save(session, setMapper.toEntity(theSet)), false);
 	}
 
 	public SetDTO join(HttpSession session, UUID setId, String password) {
-		return new SetDTO(setService.join(session, setId, password));
+		return new SetDTO(setService.join(session, setId, password), false);
 	}
 
 	public SetDTO update(HttpSession session, UUID setId, SetDTO theSet) {
 		
 		theSet.setId(setId);
 		
-		return new SetDTO(setService.update(session, setMapper.toEntity(theSet, true)));
+		return new SetDTO(setService.update(session, setMapper.toEntity(theSet, true)), false);
 	}
 
 	public void delete(HttpSession session, UUID setId) {
@@ -65,7 +65,7 @@ public class SetFacade {
 	}
 
 	public SetDTO leave(HttpSession session, UUID setId, String password) {
-		return new SetDTO(setService.leave(session, setId, password));
+		return new SetDTO(setService.leave(session, setId, password), false);
 	}
 
 }

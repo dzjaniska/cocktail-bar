@@ -33,7 +33,7 @@ public class OrderDTO {
 		id = order.getId();
 		status = order.getStatus();
 		time = order.getTime();
-		set = new SetDTO(order.getSet());
+		set = new SetDTO(order.getSet(), false);
 		cocktail = new CocktailDTO(order.getCocktail(), false, false);
 		user = new UserDTO(order.getUser());
 	}
