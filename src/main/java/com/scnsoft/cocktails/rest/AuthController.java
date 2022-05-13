@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.scnsoft.cocktails.JwtTokenUtil;
 import com.scnsoft.cocktails.dao.UserRepository;
 import com.scnsoft.cocktails.entity.User;
 
@@ -25,28 +27,25 @@ public class AuthController {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
-//	@Autowired
-//	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
 	@PostMapping
-	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+	public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		String login = request.getParameter("login");
 		String password = request.getParameter("password");
 		
-//		Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, password));
-//		User user = (User) authenticate.getPrincipal();
 		request.login(login, password);
 		Authentication auth = (Authentication) request.getUserPrincipal();
 		User user = (User) auth.getPrincipal();
 		
-		HttpSession session = request.getSession();
-		session.setAttribute("userId" , user.getId());
-		session.setAttribute("userRole" , user.getRole());
-//		String sessionId = session.getId();
-		
-//		Cookie sessionCookie = new Cookie("JSESSIONID", sessionId);
-//		response.addCookie(sessionCookie);
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.set(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateToken(user));
+		return new ResponseEntity<>(null, responseHeaders, HttpStatus.OK);
+//		HttpSession session = request.getSession();
+//		session.setAttribute("userId" , user.getId());
+//		session.setAttribute("userRole" , user.getRole());
 	}
 
 	@PostMapping("/logout")
