@@ -31,7 +31,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header == null || header.equals("") || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);

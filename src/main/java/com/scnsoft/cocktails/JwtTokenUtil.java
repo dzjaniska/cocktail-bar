@@ -14,11 +14,9 @@ public class JwtTokenUtil {
 
 	public boolean valid(String token) {
 		
-		// TODO Auto-generated method stub
 		try {
 			Jwts.parserBuilder().build().parse(token);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			return false;
 		}
 		
@@ -27,19 +25,18 @@ public class JwtTokenUtil {
 
 	public UUID getUserId(String token) {
 		
-		// TODO Auto-generated method stub
 		Claims body = Jwts.parserBuilder()
 				.build()
                 .parseClaimsJwt(token)
                 .getBody();
 		
-		return body.get("userId", UUID.class);
+		return UUID.fromString(body.get("userId", String.class));
 	}
 
 	public String generateToken(User u) {
         Claims claims = Jwts.claims();
-        claims.put("userId", u.getId());
-        claims.put("role", u.getRole());
+        claims.put("userId", u.getId().toString());
+        claims.put("role", u.getRole().toString());
 
         return Jwts.builder()
                 .setClaims(claims)
