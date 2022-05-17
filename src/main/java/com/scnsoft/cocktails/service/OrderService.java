@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.scnsoft.cocktails.JwtTokenUtil;
 import com.scnsoft.cocktails.dao.OrderRepository;
 import com.scnsoft.cocktails.entity.Cocktail;
 import com.scnsoft.cocktails.entity.Order;
@@ -26,11 +27,16 @@ public class OrderService {
 
 	@Autowired
 	private OrderRepository orderRepository;
+	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
-	public Page<Order> findAll(HttpSession session, UUID setId, Pageable pageable) {
+	public Page<Order> findAll(UUID setId, Pageable pageable) {
 		
-		UUID userId = (UUID)session.getAttribute("userId");
-		UserRole role = (UserRole)session.getAttribute("userRole");
+//		UUID userId = (UUID)session.getAttribute("userId");
+//		UserRole role = (UserRole)session.getAttribute("userRole");
+		UUID userId = jwtTokenUtil.getUserId();
+		UserRole role = jwtTokenUtil.getUserRole();
 				
 		Sort sortByTime = Sort.by(Sort.Direction.DESC, "time");
 		if (Arrays.asList(UserRole.ADMIN, UserRole.BARMEN).contains(role))
@@ -39,11 +45,13 @@ public class OrderService {
 			return orderRepository.findBySetIdAndUserId(setId, userId, pageable);
 	}
 
-	public Order findById(HttpSession session, UUID orderId) {
+	public Order findById(UUID orderId) {
 		
 		Order order = orderRepository.getById(orderId);
-		UUID userId = (UUID)session.getAttribute("userId");
-		UserRole role = (UserRole)session.getAttribute("userRole");
+//		UUID userId = (UUID)session.getAttribute("userId");
+//		UserRole role = (UserRole)session.getAttribute("userRole");
+		UUID userId = jwtTokenUtil.getUserId();
+		UserRole role = jwtTokenUtil.getUserRole();
 		
 		if (role == UserRole.BARMEN && !userId.equals(order.getSet().getOwner().getId())) {
 			throw new UserRoleException("Barmen can only get orders from his own sets");
@@ -55,10 +63,12 @@ public class OrderService {
 		return order;
 	}
 
-	public Order save(HttpSession session, Order order) {
+	public Order save(Order order) {
 		
-		UUID userId = (UUID)session.getAttribute("userId");
-		UserRole role = (UserRole)session.getAttribute("userRole");
+//		UUID userId = (UUID)session.getAttribute("userId");
+//		UserRole role = (UserRole)session.getAttribute("userRole");
+		UUID userId = jwtTokenUtil.getUserId();
+		UserRole role = jwtTokenUtil.getUserRole();
 		Hibernate.initialize(order.getSet().getUsers());
 		order.getSet().getUsers().stream().forEach(u -> Hibernate.initialize(u));
 		
@@ -76,10 +86,12 @@ public class OrderService {
 		return orderRepository.save(order);
 	}
 
-	public Order update(HttpSession session, Order order) {
+	public Order update(Order order) {
 		
-		UUID userId = (UUID)session.getAttribute("userId");
-		UserRole role = (UserRole)session.getAttribute("userRole");
+//		UUID userId = (UUID)session.getAttribute("userId");
+//		UserRole role = (UserRole)session.getAttribute("userRole");
+		UUID userId = jwtTokenUtil.getUserId();
+		UserRole role = jwtTokenUtil.getUserRole();
 		
 		if (!Arrays.asList(OrderStatus.CREATED, OrderStatus.PROCESSING).contains(order.getStatus()))
 			throw new StatusException("Only active orders can be updated");

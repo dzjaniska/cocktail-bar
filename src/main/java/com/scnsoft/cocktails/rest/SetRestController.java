@@ -37,39 +37,39 @@ public class SetRestController {
 	private SetFacade setFacade;
 	
 	@GetMapping
-	public Page<SetDTO> getSets(HttpSession session, SetSearch search, Pageable pageable) {
-		return setFacade.findAll(session, search, pageable);
+	public Page<SetDTO> getSets(SetSearch search, Pageable pageable) {
+		return setFacade.findAll(search, pageable);
 	}
 	
 	@GetMapping("/{setId}")
-	public SetDTO getSet(HttpSession session, @PathVariable UUID setId) {
-		return setFacade.findById(session, setId);
+	public SetDTO getSet(@PathVariable UUID setId) {
+		return setFacade.findById(setId);
 	}
 	
 	@PostMapping
-	public SetDTO addSet(HttpSession session, @RequestBody CreateSetDTO theSet) {
-		return setFacade.save(session, theSet);
+	public SetDTO addSet(@RequestBody CreateSetDTO theSet) {
+		return setFacade.save(theSet);
 	}
 	
 	@PostMapping("/{setId}/join")
-	public SetDTO joinSet(HttpSession session, @PathVariable UUID setId, @RequestBody String password) {
-		return setFacade.join(session, setId, password);
+	public SetDTO joinSet(@PathVariable UUID setId, @RequestBody String password) {
+		return setFacade.join(setId, password);
 	}
 	
 	@PostMapping("/{setId}/leave")
-	public SetDTO leaveSet(HttpSession session, @PathVariable UUID setId, @RequestBody String password) {
-		return setFacade.leave(session, setId, password);
+	public SetDTO leaveSet(@PathVariable UUID setId, @RequestBody String password) {
+		return setFacade.leave(setId, password);
 	}
 	
 	@PutMapping("/{setId}")
-	public SetDTO updateSet(HttpSession session, @PathVariable UUID setId, @RequestBody SetDTO theSet) {
-		return setFacade.update(session, setId, theSet);
+	public SetDTO updateSet(@PathVariable UUID setId, @RequestBody SetDTO theSet) {
+		return setFacade.update(setId, theSet);
 	}
 	
 	@DeleteMapping("/{setId}")
-	public ResponseEntity<String> deleteSet(HttpSession session, @PathVariable UUID setId) {
+	public ResponseEntity<String> deleteSet(@PathVariable UUID setId) {
 		
-		setFacade.delete(session, setId);
+		setFacade.delete(setId);
 		
 		return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
 	}

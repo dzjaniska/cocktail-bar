@@ -15,6 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.scnsoft.cocktails.JwtTokenUtil;
 import com.scnsoft.cocktails.dao.SetRepository;
 import com.scnsoft.cocktails.dao.SetSpecifications;
 import com.scnsoft.cocktails.dao.UserRepository;
@@ -32,12 +33,18 @@ public class SetService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public Page<Set> findAll(HttpSession session, SetSearch search, Pageable pageable) {
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	
+	public Page<Set> findAll(SetSearch search, Pageable pageable) {
 		
 		Specification<Set> specification = SetSpecifications.empty();
 		
-		UUID id = (UUID)session.getAttribute("userId");
-		UserRole role = (UserRole)session.getAttribute("userRole");
+//		UUID id = (UUID)session.getAttribute("userId");
+//		UserRole role = (UserRole)session.getAttribute("userRole");
+		UUID id = (UUID)jwtTokenUtil.getUserId();
+		UserRole role = (UserRole)jwtTokenUtil.getUserRole();
+		
 		if (role == UserRole.BARMEN)
 			specification = specification.and(SetSpecifications.setsForBarmen(id));
 		else if (role == UserRole.USER)
@@ -51,12 +58,15 @@ public class SetService {
 		return setRepository.findAll(specification, ((PageRequest)pageable).withSort(sortByDate));
 	}
 
-	public Set findById(HttpSession session, UUID setId) {
+	public Set findById(UUID setId) {
 		
 		Specification<Set> specification = SetSpecifications.idEquals(setId);
 		
-		UUID id = (UUID)session.getAttribute("userId");
-		UserRole role = (UserRole)session.getAttribute("userRole");
+//		UUID id = (UUID)session.getAttribute("userId");
+//		UserRole role = (UserRole)session.getAttribute("userRole");
+		UUID id = (UUID)jwtTokenUtil.getUserId();
+		UserRole role = (UserRole)jwtTokenUtil.getUserRole();
+		
 		if (role == UserRole.BARMEN)
 			specification = specification.and(SetSpecifications.setsForBarmen(id));
 		else if (role == UserRole.USER)
@@ -66,13 +76,16 @@ public class SetService {
 				.orElseThrow();
 	}
 
-	public Set save(HttpSession session, Set set) {
+	public Set save(Set set) {
 		
-		UUID userId = (UUID)session.getAttribute("userId");
-		if ((UserRole)session.getAttribute("userRole") != UserRole.BARMEN)
+//		UUID userId = (UUID)session.getAttribute("userId");
+		UUID id = (UUID)jwtTokenUtil.getUserId();
+		UserRole role = (UserRole)jwtTokenUtil.getUserRole();
+		
+		if (role != UserRole.BARMEN)
 			throw new UserRoleException("Only barmen can create sets");
 		else {
-			set.setOwner(userRepository.getById(userId));
+			set.setOwner(userRepository.getById(id));
 			Hibernate.initialize(set.getOwner());
 		}
 		set.setStatus(SetStatus.OPENED);
@@ -81,11 +94,14 @@ public class SetService {
 		return setRepository.save(set);
 	}
 
-	public Set join(HttpSession session, UUID setId, String password) {
+	public Set join(UUID setId, String password) {
 
-		if ((UserRole)session.getAttribute("userRole") != UserRole.USER)
+		UUID id = (UUID)jwtTokenUtil.getUserId();
+		UserRole role = (UserRole)jwtTokenUtil.getUserRole();
+		
+		if (role != UserRole.USER)
 			throw new UserRoleException("Only user can join sets");
-		if (setRepository.countByUserIdWhereActive((UUID)session.getAttribute("userId")) > 0)
+		if (setRepository.countByUserIdWhereActive(id) > 0)
 			throw new StatusException("An active set already detected for the user");
 		Set set = setRepository.getById(setId);
 		if (set.getStatus() != SetStatus.ACTIVE)
@@ -93,18 +109,20 @@ public class SetService {
 		if (!set.getPassword().equals(password))
 			throw new AuthorizationException("Incorrect password");
 		
-		UUID userId = (UUID)session.getAttribute("userId");
-		set.getUsers().add(userRepository.getById(userId));
+		set.getUsers().add(userRepository.getById(id));
 		return setRepository.save(set);
 	}
 
-	public Set update(HttpSession session, Set set) {
+	public Set update(Set set) {
 		
-		UUID userId = (UUID)session.getAttribute("userId");
-		UserRole role = (UserRole)session.getAttribute("userRole");
+//		UUID userId = (UUID)session.getAttribute("userId");
+//		UserRole role = (UserRole)session.getAttribute("userRole");
+		UUID id = (UUID)jwtTokenUtil.getUserId();
+		UserRole role = (UserRole)jwtTokenUtil.getUserRole();
+		
 		if (!Arrays.asList(UserRole.ADMIN, UserRole.BARMEN).contains(role))
 			throw new UserRoleException("Only admin or barmen can update sets");
-		if (role == UserRole.BARMEN && !userId.equals(set.getOwner().getId()))
+		if (role == UserRole.BARMEN && !id.equals(set.getOwner().getId()))
 			throw new UserRoleException("Only owning barmen can update sets");
 		if (set.getStatus() == SetStatus.CLOSED)
 			throw new StatusException("Closed sets can't be updated");
@@ -117,21 +135,28 @@ public class SetService {
 		setRepository.closeWhereAgeMoreThanTwoDays();
 	}
 
-	public void delete(HttpSession session, UUID setId) {
+	public void delete(UUID setId) {
 		
-		UUID userId = (UUID)session.getAttribute("userId");
-		UserRole role = (UserRole)session.getAttribute("userRole");
+//		UUID userId = (UUID)session.getAttribute("userId");
+//		UserRole role = (UserRole)session.getAttribute("userRole");
+		UUID id = (UUID)jwtTokenUtil.getUserId();
+		UserRole role = (UserRole)jwtTokenUtil.getUserRole();
+		
 		if (!Arrays.asList(UserRole.ADMIN, UserRole.BARMEN).contains(role))
 			throw new UserRoleException("Only admin or barmen can delete sets");
 		Set set = setRepository.getById(setId);
-		if (role == UserRole.BARMEN && !userId.equals(set.getOwner().getId()))
+		if (role == UserRole.BARMEN && !id.equals(set.getOwner().getId()))
 			throw new UserRoleException("Only owning barmen can delete sets");
 		
 		setRepository.deleteById(setId);
 	}
 
-	public Set leave(HttpSession session, UUID setId, String password) {
-		if ((UserRole)session.getAttribute("userRole") != UserRole.USER)
+	public Set leave(UUID setId, String password) {
+		
+		UUID id = (UUID)jwtTokenUtil.getUserId();
+		UserRole role = (UserRole)jwtTokenUtil.getUserRole();
+		
+		if (role != UserRole.USER)
 			throw new UserRoleException("Only user can leave sets");
 		Set set = setRepository.getById(setId);
 		if (set.getStatus() != SetStatus.ACTIVE)
@@ -139,8 +164,7 @@ public class SetService {
 		if (!set.getPassword().equals(password))
 			throw new AuthorizationException("Incorrect password");
 		
-		UUID userId = (UUID)session.getAttribute("userId");
-		set.getUsers().remove(userRepository.getById(userId));
+		set.getUsers().remove(userRepository.getById(id));
 		return setRepository.save(set);
 	}
 }

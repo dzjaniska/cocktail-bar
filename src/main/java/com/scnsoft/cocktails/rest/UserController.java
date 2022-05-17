@@ -64,7 +64,7 @@ public class UserController {
 	
 	@PutMapping("/{userId}")
 	public UserDTO updateUser(HttpSession session, @PathVariable UUID userId, @RequestBody UserDTO theUser) {
-		return userFacade.update(session, userId, theUser);
+		return userFacade.update(userId, theUser);
 	}
 	
 	@DeleteMapping("/{userId}")

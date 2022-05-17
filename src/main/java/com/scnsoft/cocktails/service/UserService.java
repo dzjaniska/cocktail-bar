@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import com.scnsoft.cocktails.JwtTokenUtil;
 import com.scnsoft.cocktails.dao.UserRepository;
 import com.scnsoft.cocktails.entity.User;
 import com.scnsoft.cocktails.entity.UserRole;
@@ -19,6 +20,9 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
 	public Page<User> findAll(Pageable pageable) {
 		return userRepository.findAll(pageable);
@@ -37,8 +41,8 @@ public class UserService {
 		return userRepository.save(entity);
 	}
 
-	public User update(HttpSession session, User entity) {
-		if (!entity.getId().equals(session.getAttribute("userId")) && !UserRole.ADMIN.equals(session.getAttribute("userRole")))
+	public User update(User entity) {
+		if (!entity.getId().equals(jwtTokenUtil.getUserId()) && !UserRole.ADMIN.equals(jwtTokenUtil.getUserRole()))
 			throw new AccessDeniedException("Users are not allowed to update other users");
 		
 		return userRepository.save(entity);

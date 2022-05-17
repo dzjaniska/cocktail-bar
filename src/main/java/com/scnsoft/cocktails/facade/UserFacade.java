@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.scnsoft.cocktails.JwtTokenUtil;
 import com.scnsoft.cocktails.dto.UserDTO;
 import com.scnsoft.cocktails.entity.User;
 import com.scnsoft.cocktails.mapper.UserMapper;
@@ -25,6 +26,9 @@ public class UserFacade {
 
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
 	public Page<UserDTO> findAll(Pageable pageable) {
 		Page<User> page = userService
@@ -48,11 +52,11 @@ public class UserFacade {
 		return new UserDTO(userService.save(userMapper.toEntity(theUser, true, true)));
 	}
 
-	public UserDTO update(HttpSession session, UUID userId, UserDTO theUser) {
+	public UserDTO update(UUID userId, UserDTO theUser) {
 		theUser.setId(userId);
 		
-		boolean setPassword = userId == session.getAttribute("userId") ? true : false;
-		return new UserDTO(userService.update(session, userMapper.toEntity(theUser, false, setPassword)));
+		boolean setPassword = userId.equals(jwtTokenUtil.getUserId()) ? true : false;
+		return new UserDTO(userService.update(userMapper.toEntity(theUser, false, setPassword)));
 	}
 
 	public void deleteById(UUID userId) {

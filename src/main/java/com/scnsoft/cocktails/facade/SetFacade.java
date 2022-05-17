@@ -28,10 +28,10 @@ public class SetFacade {
 	@Autowired
 	private SetMapper setMapper;
 	
-	public Page<SetDTO> findAll(HttpSession session, SetSearch search, Pageable pageable) {
+	public Page<SetDTO> findAll(SetSearch search, Pageable pageable) {
 		
 		Page<Set> page = setService
-				.findAll(session, search, pageable);
+				.findAll(search, pageable);
 		
 		return new PageImpl<>(page
 				.stream()
@@ -41,31 +41,31 @@ public class SetFacade {
 				page.getTotalElements());
 	}
 
-	public SetDTO findById(HttpSession session, UUID setId) {
-		return new SetDTO(setService.findById(session, setId), false);
+	public SetDTO findById(UUID setId) {
+		return new SetDTO(setService.findById(setId), false);
 	}
 
-	public SetDTO save(HttpSession session, CreateSetDTO theSet) {
-		return new SetDTO(setService.save(session, setMapper.toEntity(theSet)), false);
+	public SetDTO save(CreateSetDTO theSet) {
+		return new SetDTO(setService.save(setMapper.toEntity(theSet)), false);
 	}
 
-	public SetDTO join(HttpSession session, UUID setId, String password) {
-		return new SetDTO(setService.join(session, setId, password), false);
+	public SetDTO join(UUID setId, String password) {
+		return new SetDTO(setService.join(setId, password), false);
 	}
 
-	public SetDTO update(HttpSession session, UUID setId, SetDTO theSet) {
+	public SetDTO update(UUID setId, SetDTO theSet) {
 		
 		theSet.setId(setId);
 		
-		return new SetDTO(setService.update(session, setMapper.toEntity(theSet, true)), false);
+		return new SetDTO(setService.update(setMapper.toEntity(theSet, true)), false);
 	}
 
-	public void delete(HttpSession session, UUID setId) {
-		setService.delete(session, setId);
+	public void delete(UUID setId) {
+		setService.delete(setId);
 	}
 
-	public SetDTO leave(HttpSession session, UUID setId, String password) {
-		return new SetDTO(setService.leave(session, setId, password), false);
+	public SetDTO leave(UUID setId, String password) {
+		return new SetDTO(setService.leave(setId, password), false);
 	}
 
 }

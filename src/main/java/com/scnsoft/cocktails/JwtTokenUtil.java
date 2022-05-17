@@ -2,9 +2,12 @@ package com.scnsoft.cocktails;
 
 import java.util.UUID;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.scnsoft.cocktails.entity.User;
+import com.scnsoft.cocktails.entity.UserRole;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -42,4 +45,18 @@ public class JwtTokenUtil {
                 .setClaims(claims)
                 .compact();
     }
+	
+	public UUID getUserId() {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)auth.getPrincipal();
+		return user.getId();
+	}
+	
+	public UserRole getUserRole() {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User)auth.getPrincipal();
+		return user.getRole();
+	}
 }

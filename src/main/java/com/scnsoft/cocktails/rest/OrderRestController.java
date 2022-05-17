@@ -36,23 +36,23 @@ public class OrderRestController {
 	private OrderFacade orderFacade;
 
 	@GetMapping("/{setId}")
-	public Page<OrderDTO> getOrders(HttpSession session, @PathVariable UUID setId, Pageable pageable) {
-		return orderFacade.findAll(session, setId, pageable);
+	public Page<OrderDTO> getOrders(@PathVariable UUID setId, Pageable pageable) {
+		return orderFacade.findAll(setId, pageable);
 	}
 
 	@GetMapping("/single/{orderId}")
-	public OrderDTO getOrderById(HttpSession session, @PathVariable UUID orderId) {
-		return orderFacade.findById(session, orderId);
+	public OrderDTO getOrderById(@PathVariable UUID orderId) {
+		return orderFacade.findById(orderId);
 	}
 	
 	@PostMapping
-	public OrderDTO createOrder(HttpSession session, @RequestBody CreateOrderDto createOrderDto) {
-		return orderFacade.save(session, createOrderDto);
+	public OrderDTO createOrder(@RequestBody CreateOrderDto createOrderDto) {
+		return orderFacade.save(createOrderDto);
 	}
 	
 	@PutMapping("/{orderId}")
-	public OrderDTO updateOrder(HttpSession session, @PathVariable UUID orderId, @RequestBody OrderDTO orderDto) {
-		return orderFacade.update(session, orderId, orderDto);
+	public OrderDTO updateOrder(@PathVariable UUID orderId, @RequestBody OrderDTO orderDto) {
+		return orderFacade.update(orderId, orderDto);
 	}
 	
 	@ExceptionHandler

@@ -1,13 +1,11 @@
 package com.scnsoft.cocktails.mapper;
 
 import java.time.LocalTime;
-import java.util.UUID;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.scnsoft.cocktails.JwtTokenUtil;
 import com.scnsoft.cocktails.dao.CocktailRepository;
 import com.scnsoft.cocktails.dao.OrderRepository;
 import com.scnsoft.cocktails.dao.SetRepository;
@@ -32,7 +30,10 @@ public class OrderMapper {
 	@Autowired
 	private OrderRepository orderRepository;
 	
-	public Order toEntity(HttpSession session, CreateOrderDto dto) {
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	
+	public Order toEntity(CreateOrderDto dto) {
 		
 		if(dto == null) {
             return null;
@@ -43,7 +44,7 @@ public class OrderMapper {
 		order.setTime(LocalTime.now());
 		order.setSet(setRepository.getById(dto.getSetId()));
 		order.setCocktail(cocktailRepository.getById(dto.getCocktailId()));
-		order.setUser(userRepository.getById((UUID)session.getAttribute("userId")));
+		order.setUser(userRepository.getById(jwtTokenUtil.getUserId()));
 		
 		return order;
 	}

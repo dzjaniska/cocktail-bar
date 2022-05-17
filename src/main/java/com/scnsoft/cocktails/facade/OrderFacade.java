@@ -27,10 +27,10 @@ public class OrderFacade {
 	@Autowired
 	private OrderMapper orderMapper;
 
-	public Page<OrderDTO> findAll(HttpSession session, UUID setId, Pageable pageable) {
+	public Page<OrderDTO> findAll(UUID setId, Pageable pageable) {
 		
 		Page<Order> page = orderService
-				.findAll(session, setId, pageable);
+				.findAll(setId, pageable);
 		
 		return new PageImpl<>(page
 				.stream()
@@ -40,18 +40,18 @@ public class OrderFacade {
 				page.getTotalElements());
 	}
 
-	public OrderDTO findById(HttpSession session, UUID orderId) {
-		return new OrderDTO(orderService.findById(session, orderId));
+	public OrderDTO findById(UUID orderId) {
+		return new OrderDTO(orderService.findById(orderId));
 	}
 
-	public OrderDTO save(HttpSession session, CreateOrderDto createOrderDto) {
-		return new OrderDTO(orderService.save(session, orderMapper.toEntity(session, createOrderDto)));
+	public OrderDTO save(CreateOrderDto createOrderDto) {
+		return new OrderDTO(orderService.save(orderMapper.toEntity(createOrderDto)));
 	}
 
-	public OrderDTO update(HttpSession session, UUID orderId, OrderDTO orderDto) {
+	public OrderDTO update(UUID orderId, OrderDTO orderDto) {
 		
 		orderDto.setId(orderId);
 		
-		return new OrderDTO(orderService.update(session, orderMapper.toEntity(orderDto)));
+		return new OrderDTO(orderService.update(orderMapper.toEntity(orderDto)));
 	}
 }
