@@ -1,9 +1,13 @@
 package com.scnsoft.cocktails.facade;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpSession;
 
+import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -44,7 +48,7 @@ public class OrderFacade {
 		return new OrderDTO(orderService.findById(orderId));
 	}
 
-	public OrderDTO save(CreateOrderDto createOrderDto) {
+	public OrderDTO save(CreateOrderDto createOrderDto) throws GeneralSecurityException, IOException, JoseException, ExecutionException, InterruptedException {
 		return new OrderDTO(orderService.save(orderMapper.toEntity(createOrderDto)));
 	}
 

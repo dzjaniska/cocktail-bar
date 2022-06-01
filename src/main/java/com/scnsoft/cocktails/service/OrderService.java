@@ -1,11 +1,15 @@
 package com.scnsoft.cocktails.service;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.Hibernate;
+import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +25,8 @@ import com.scnsoft.cocktails.entity.OrderStatus;
 import com.scnsoft.cocktails.entity.SetStatus;
 import com.scnsoft.cocktails.entity.User;
 import com.scnsoft.cocktails.entity.UserRole;
+import com.scnsoft.cocktails.rest.PushController;
+import com.scnsoft.cocktails.rest.UserController;
 
 @Service
 public class OrderService {
@@ -30,6 +36,12 @@ public class OrderService {
 	
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
+
+	@Autowired
+	private PushController pushController;
+	
+	@Autowired
+	private UserService userService;
 
 	public Page<Order> findAll(UUID setId, Pageable pageable) {
 		
@@ -63,7 +75,7 @@ public class OrderService {
 		return order;
 	}
 
-	public Order save(Order order) {
+	public Order save(Order order) throws GeneralSecurityException, IOException, JoseException, ExecutionException, InterruptedException {
 		
 //		UUID userId = (UUID)session.getAttribute("userId");
 //		UserRole role = (UserRole)session.getAttribute("userRole");
@@ -82,6 +94,8 @@ public class OrderService {
 			throw new AuthorizationException("The cocktail must be included in the set");
 		if (orderRepository.countByUserIdAndSetIdAndStatusIn(userId, order.getSet().getId(), OrderStatus.CREATED, OrderStatus.PROCESSING) > 0)
 			throw new AuthorizationException("The set must have only one active order per user");
+		
+		pushController.sendToAllWithPayload("New order received from user " + userService.findById(userId).getLogin());
 		
 		return orderRepository.save(order);
 	}

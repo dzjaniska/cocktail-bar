@@ -1,10 +1,14 @@
 package com.scnsoft.cocktails.rest;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpSession;
 
+import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -46,7 +50,7 @@ public class OrderRestController {
 	}
 	
 	@PostMapping
-	public OrderDTO createOrder(@RequestBody CreateOrderDto createOrderDto) {
+	public OrderDTO createOrder(@RequestBody CreateOrderDto createOrderDto) throws GeneralSecurityException, IOException, JoseException, ExecutionException, InterruptedException {
 		return orderFacade.save(createOrderDto);
 	}
 	
